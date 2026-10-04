@@ -1,4 +1,5 @@
-import { GUIDE_URL, SAMPLE_BOOK_URL } from '../config'
+import { SAMPLE_BOOK_URL } from '../config'
+import { useState } from 'react'
 import bookCover from '../assets/images/book-cover.webp'
 import guideCards from '../assets/images/guide-cards.webp'
 import sectionArc from '../assets/icons/section-arc.svg'
@@ -7,6 +8,7 @@ import circleSm from '../assets/icons/circle-bg-sm.svg'
 import arrowSample from '../assets/icons/arrow-right-hero.svg'
 import arrowGuide from '../assets/icons/arrow-right-guide.svg'
 import Button from './Button'
+import GuideModal from './GuideModal'
 import './Sample.css'
 
 // 배경 원 (Figma 좌표, 1440 기준 / 섹션 시작 y=2485)
@@ -18,8 +20,11 @@ const CIRCLES = [
 ]
 
 export default function Sample() {
+  const [isGuideOpen, setIsGuideOpen] = useState(false)
+
   return (
-    <section className="sample" id="sample">
+    <>
+      <section className="sample" id="sample">
       <img className="sample__arc" src={sectionArc} alt="" aria-hidden="true" />
       {CIRCLES.map((c) => (
         <img
@@ -67,12 +72,14 @@ export default function Sample() {
               <br />
               질문과 대화 가이드를 제공해요.
             </p>
-            <Button href={GUIDE_URL} variant="mint" width={208} arrow={arrowGuide}>
+            <Button variant="mint" width={208} arrow={arrowGuide} onClick={() => setIsGuideOpen(true)}>
               대화 가이드 더 보기
             </Button>
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+      <GuideModal key={isGuideOpen ? 'open' : 'closed'} isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+    </>
   )
 }

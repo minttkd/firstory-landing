@@ -7,6 +7,15 @@
   font-display: swap;
 }
 
+/* 모달 문구까지 모든 한글 글리프를 포함한 전체 버전 */
+@font-face {
+  font-family: 'MemomentKkukkukkFull';
+  src: url('../assets/fonts/MemomentKkukkukkFull.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 오뮤 다예쁨체: 라이선스상 글리프 수정(글자 추출) 금지라 원본 전체를 woff2로 포맷 변환만 했어요. */
 @font-face {
   font-family: 'omyu_pretty';
