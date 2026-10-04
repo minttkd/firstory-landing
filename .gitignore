@@ -29,3 +29,6 @@ dist-ssr
 
 # Claude Code 로컬 설정
 .claude/
+
+# 폰트 원본 (라이선스상 재배포 금지)
+fonts-src/
