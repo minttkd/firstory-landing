@@ -4,7 +4,8 @@
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -20,6 +21,8 @@
   position: relative;
   width: min(1040px, 100%);
   height: min(640px, calc(100vh - 48px));
+  height: min(640px, calc(100dvh - 48px));
+  min-height: 0;
   overflow: hidden;
   padding: 0;
   border-radius: 19px;
@@ -33,15 +36,13 @@
 
 .guide-modal__scroll {
   height: 100%;
-  overflow-y: hidden;
+  min-height: 0;
+  overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
   padding: 30px 52px 30px 40px;
   border-radius: inherit;
   scrollbar-gutter: stable;
-}
-
-.guide-modal.is-scrollable .guide-modal__scroll {
-  overflow-y: auto;
 }
 
 .guide-modal h2 {
@@ -278,21 +279,24 @@
 
 @media (max-width: 760px) {
   .guide-modal-overlay {
-    padding: 12px;
+    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
   }
 
   .guide-modal {
-    height: min(640px, calc(100vh - 24px));
+    width: 100%;
+    height: min(640px, calc(100vh - 20px));
+    height: min(640px, calc(100dvh - 20px));
     border-radius: 16px;
   }
 
   .guide-modal__scroll {
-    padding: 28px 20px 28px;
+    padding: 24px 16px 24px;
   }
 
   .guide-modal h2 {
-    padding-right: 40px;
-    font-size: 28px;
+    padding-right: 44px;
+    font-size: clamp(24px, 7.4vw, 28px);
   }
 
   .guide-modal__close {
@@ -307,21 +311,22 @@
 
   .guide-modal__trigger {
     align-items: flex-start;
-    min-height: 88px;
-    padding: 14px 72px 14px 86px;
+    min-height: 82px;
+    padding: 12px 64px 12px 78px;
   }
 
   .guide-modal__item {
     --guide-trigger-center: 44px;
+    border-radius: 25px;
   }
 
   .guide-modal__copy strong {
-    font-size: 21px;
+    font-size: clamp(18px, 5.6vw, 21px);
   }
 
   .guide-modal__copy > span,
   .guide-modal__detail p {
-    font-size: 15px;
+    font-size: clamp(14px, 4vw, 15px);
   }
 
   .guide-modal__icon {
@@ -344,16 +349,96 @@
 
   .guide-modal__toggle {
     right: 11px;
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
   }
 
   .guide-modal__detail {
-    padding: 0 22px 0 86px;
+    padding: 0 18px 0 78px;
   }
 
   .guide-modal__item.is-open .guide-modal__detail {
     padding-bottom: 20px;
+  }
+}
+
+/* iPhone SE처럼 폭과 세로 높이가 모두 작은 화면에서는 카드 밀도를 낮춘다. */
+@media (max-width: 390px) and (max-height: 700px) {
+  .guide-modal__scroll {
+    padding: 18px 12px;
+  }
+
+  .guide-modal h2 {
+    padding-right: 40px;
+    font-size: 22px;
+    line-height: 1.28;
+  }
+
+  .guide-modal__notice {
+    margin: 8px 0;
+    font-size: 13px;
+  }
+
+  .guide-modal__list {
+    gap: 12px;
+  }
+
+  .guide-modal__item {
+    --guide-trigger-center: 34px;
+    border-radius: 24px;
+  }
+
+  .guide-modal__trigger {
+    min-height: 72px;
+    padding: 10px 56px 10px 68px;
+  }
+
+  .guide-modal__copy {
+    gap: 2px;
+  }
+
+  .guide-modal__copy strong {
+    font-size: 17px;
+    line-height: 1.28;
+  }
+
+  .guide-modal__copy > span,
+  .guide-modal__detail p {
+    font-size: 13px;
+    line-height: 1.38;
+  }
+
+  .guide-modal__icon {
+    top: 50%;
+    transform: translateY(-50%) scale(0.72);
+  }
+
+  .guide-modal__toggle {
+    top: 50%;
+  }
+
+  .guide-modal__item.is-open .guide-modal__icon,
+  .guide-modal__item.is-open .guide-modal__toggle {
+    top: 50%;
+  }
+
+  .guide-modal__toggle {
+    right: 8px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .guide-modal__toggle-icon,
+  .guide-modal__toggle-icon::after {
+    width: 16px;
+  }
+
+  .guide-modal__detail {
+    padding: 0 14px 0 68px;
+  }
+
+  .guide-modal__item.is-open .guide-modal__detail {
+    padding-bottom: 16px;
   }
 }
 
