@@ -1,3 +1,21 @@
+/* 웹폰트 (src/assets/fonts). 문구를 바꾸면 scripts/subset-font.py로 다시 만들어주세요. */
+@font-face {
+  font-family: 'MemomentKkukkukk';
+  src: url('../assets/fonts/MemomentKkukkukk.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 오뮤 다예쁨체: 라이선스상 글리프 수정(글자 추출) 금지라 원본 전체를 woff2로 포맷 변환만 했어요. */
+@font-face {
+  font-family: 'omyu_pretty';
+  src: url('../assets/fonts/OmyuPretty.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 디자인 토큰 (Figma: 겨울잠_Firstory / Desktop - 1) */
 :root {
   --color-primary: #ff8a5b;
@@ -11,8 +29,7 @@
   --color-footer-bg: #f2f2f2;
   --color-footer-text: #8c8c8c;
 
-  /* Memoment 꾹꾹체 / 오뮤 다예쁨체는 시스템에 설치된 폰트를 우선 사용하고,
-     없으면 비슷한 느낌의 웹폰트(Gaegu)로 대체돼요. 폰트 파일(woff2)이 생기면 이 파일에 @font-face를 추가하세요. */
+  /* Memoment 꾹꾹체와 오뮤 다예쁨체는 위 @font-face(웹폰트)를 쓰고, 로딩 전/실패 시 Gaegu로 대체돼요. */
   --font-logo: 'Darumadrop One', 'Gaegu', cursive;
   --font-title: 'MemomentKkukkukk', 'Memoment Kkukkukk', 'Gaegu', 'Pretendard Variable', sans-serif;
   --font-hand: 'omyu_pretty', 'Omyu Pretty', 'Gaegu', 'Pretendard Variable', sans-serif;
