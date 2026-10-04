@@ -48,7 +48,7 @@ src/
   - Darumadrop One / Noto Sans KR / Pretendard는 웹폰트로 불러와요 (`index.html`).
   - Memoment 꾹꾹체와 오뮤 다예쁨체는 웹폰트 주소를 확정하지 못해서, PC에 설치된 폰트를 쓰고 없으면 Gaegu로 대체돼요.
     배포 전에 폰트 파일(woff2)을 `src/assets/fonts/`에 넣고 `global.css`에 `@font-face`를 추가해주세요.
-- 이미지는 Figma 임시 URL이 아니라 `src/assets`에 내려받아 사용합니다. PNG 용량이 커서 배포 전 압축/WebP 변환을 권장해요.
+- 이미지는 Figma 임시 URL이 아니라 `src/assets`에 내려받아 사용합니다. 사진/일러스트는 WebP(품질 84)로 변환해 두었고(약 16MB → 0.75MB), 표시 크기의 약 2배 폭을 넘지 않게 줄였어요. 새 이미지를 추가할 때도 WebP로 변환해서 넣어주세요.
 
 ## 협업 규칙
 
@@ -74,7 +74,7 @@ git push -u origin feat/hero-illustration
 - [ ] Memoment 꾹꾹체 / 오뮤 다예쁨체 웹폰트 연결
 - [ ] FAQ 2·3번 답변 문구 확정 (`Faq.jsx`, 현재 임시 문구)
 - [ ] 버튼 링크 연결 (`src/config.js`: `CTA_URL`, `SAMPLE_BOOK_URL`, `GUIDE_URL`) 및 푸터 문의 이메일
-- [ ] 이미지 최적화 (PNG → WebP, 크기 조정)
+- [x] 이미지 최적화 (PNG → WebP, 크기 조정)
 - [ ] 태블릿/모바일 디자인 확정 후 반응형 보완 (현재는 임시 대응)
 - [ ] OG 이미지, 서비스 URL 등 메타 태그 보강 (`index.html`)
 - [ ] 배포 (Vercel / Netlify / GitHub Pages 중 선택)

@@ -1,5 +1,5 @@
 import { CTA_URL } from '../config'
-import ctaBg from '../assets/images/cta-bg.png'
+import ctaBg from '../assets/images/cta-bg.webp'
 import arrowCta from '../assets/icons/arrow-right-cta.svg'
 import Button from './Button'
 import './FinalCta.css'

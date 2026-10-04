@@ -1,4 +1,4 @@
-import heroBg from '../assets/images/hero-bg.png'
+import heroBg from '../assets/images/hero-bg.webp'
 import chevronDown from '../assets/icons/chevron-down.svg'
 import arrowRight from '../assets/icons/arrow-right-hero.svg'
 import Button from './Button'

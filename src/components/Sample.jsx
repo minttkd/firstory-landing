@@ -1,6 +1,6 @@
 import { GUIDE_URL, SAMPLE_BOOK_URL } from '../config'
-import bookCover from '../assets/images/book-cover.png'
-import guideCards from '../assets/images/guide-cards.png'
+import bookCover from '../assets/images/book-cover.webp'
+import guideCards from '../assets/images/guide-cards.webp'
 import sectionArc from '../assets/icons/section-arc.svg'
 import circleLg from '../assets/icons/circle-bg-lg.svg'
 import circleSm from '../assets/icons/circle-bg-sm.svg'
