@@ -1,0 +1,54 @@
+.how {
+  background: var(--surface);
+  border-block: 1px solid var(--line);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  counter-reset: step;
+}
+
+.step {
+  position: relative;
+  padding: 28px 24px;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.step-no {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: var(--coral);
+  border: 2px solid var(--ink);
+  font-weight: 800;
+}
+
+.step h3 {
+  margin-bottom: 10px;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.step p {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+@media (max-width: 1000px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}

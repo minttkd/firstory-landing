@@ -1,0 +1,80 @@
+.story-inner {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  align-items: center;
+  gap: 56px;
+}
+
+.story-note {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.phone {
+  justify-self: center;
+  width: min(100%, 340px);
+  padding: 14px;
+  border: 2px solid var(--ink);
+  border-radius: 40px;
+  background: var(--ink);
+  box-shadow: 10px 10px 0 var(--coral);
+}
+
+.phone-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 460px;
+  padding: 26px 22px;
+  border-radius: 28px;
+  background: var(--sky);
+}
+
+.story-tag {
+  align-self: flex-start;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.story-art {
+  display: grid;
+  place-items: center;
+  height: 130px;
+  border-radius: 20px;
+  background: var(--mint);
+  font-size: 3.2rem;
+}
+
+.story-text {
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.story-question {
+  margin-top: auto;
+  padding: 16px;
+  border: 2px dashed var(--ink);
+  border-radius: 16px;
+  background: var(--yellow);
+}
+
+.story-question span {
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.story-question p {
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .story-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
