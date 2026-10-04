@@ -21,23 +21,15 @@ Node.js 20 이상을 권장합니다.
 
 ```
 src/
-├─ components/   섹션별 컴포넌트 (JSX + CSS가 한 쌍)
-│  ├─ Header      상단 내비게이션
-│  ├─ Hero        메인 카피 + 일러스트
-│  ├─ Problem     "이런 순간, 있으셨나요?"
-│  ├─ HowItWorks  이용 방법 4단계
-│  ├─ StoryPreview 동화 화면 예시
-│  ├─ Pledge      FIRSTORY의 약속
-│  ├─ Faq         자주 묻는 질문
-│  ├─ FinalCta    마무리 CTA
-│  └─ Footer
-├─ hooks/        useReveal (스크롤 등장 애니메이션)
+├─ components/   섹션별 컴포넌트 (Hero.jsx + Hero.css처럼 JSX/CSS를 한 쌍으로)
+├─ hooks/        useReveal (스크롤 등장 애니메이션, 필요하면 사용)
 ├─ styles/       global.css (색상/간격 토큰, 공통 버튼·섹션 스타일)
 ├─ config.js     CTA 링크/문구 (출시 알림 폼 주소는 여기서만 수정)
 └─ App.jsx       섹션 조립
 ```
 
-섹션마다 JSX와 CSS 파일이 분리되어 있어서, 서로 다른 섹션을 맡으면 충돌 없이 작업할 수 있어요.
+섹션마다 JSX와 CSS 파일을 분리하면, 서로 다른 섹션을 맡았을 때 충돌 없이 작업할 수 있어요.
+`global.css`의 색상 변수와 공통 스타일은 임시 값이니 디자인 시안에 맞춰 수정해주세요.
 
 ## 협업 규칙
 
@@ -59,7 +51,8 @@ git push -u origin feat/hero-illustration
 
 ## TODO
 
+- [ ] 디자인 시안 기준으로 `global.css` 토큰(색상, 폰트, 간격) 정리
+- [ ] 섹션별 컴포넌트 구현 및 `App.jsx`에서 조립
 - [ ] 출시 알림 신청 폼 주소를 `src/config.js`의 `CTA_URL`에 연결
-- [ ] 실제 일러스트/이미지 교체 (현재는 이모지 + CSS 임시 비주얼)
-- [ ] OG 이미지, 서비스 URL 등 메타 태그 보강
+- [ ] OG 이미지, 서비스 URL 등 메타 태그 보강 (`index.html`)
 - [ ] 배포 (Vercel / Netlify / GitHub Pages 중 선택)
