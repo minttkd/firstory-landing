@@ -24,7 +24,7 @@ const QUOTES = [
 ]
 
 // "동생이 태어난다는 걸…" 묶음: Figma 프레임 밖(캔버스 x≈6474, y≈2146)에 따로 있던 4개 요소를
-// 서로의 상대 배치를 유지한 채 왼쪽 위 빈 자리(x=164, y=1110)로 옮겼어요.
+// 서로의 상대 배치를 유지한 채, 유치원 말풍선이 원래 있던 왼쪽 위 자리(말풍선 중심 461, 1210)에 맞춰 옮겼어요.
 // 디자이너가 프레임 안에 위치를 확정하면 아래 좌표만 바꿔주세요.
 
 // 중심 좌표(cx, cy)와 크기로 배치하고 중심 기준으로 회전/기울여요.
@@ -85,12 +85,12 @@ export default function Problem() {
             />
           </Box>
 
-          <Placed cx={407.054} cy={1246.356} w={483} h={72.949} rotate={-2.95}>
+          <Placed cx={461} cy={1210} w={483} h={72.949} rotate={-2.95}>
             <img src={noteCoral2} alt="" />
           </Placed>
           <Placed
-            cx={406.779}
-            cy={1230.579}
+            cx={460.725}
+            cy={1194.223}
             w={384}
             h={32.17}
             rotate={-2.65}
@@ -98,10 +98,10 @@ export default function Problem() {
           >
             {QUOTES[0]}
           </Placed>
-          <Placed cx={739.051} cy={1171.568} w={362.434} h={91.339} rotate={178.5} flipY>
+          <Placed cx={792.997} cy={1135.211} w={362.434} h={91.339} rotate={178.5} flipY>
             <img src={barFlip} alt="" />
           </Placed>
-          <Placed cx={227.23} cy={1158.83} w={97.65} h={97.65}>
+          <Placed cx={281.176} cy={1122.474} w={97.65} h={97.65}>
             <Sprite crop={{ height: '235.39%', left: '-199.38%', top: '-122.94%', width: '353.09%' }} />
           </Placed>
 
