@@ -13,8 +13,12 @@ import './ReleaseBenefitModal.css'
 export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
 
-  const handleClose = useCallback(() => onClose(), [onClose])
+  const handleClose = useCallback(() => {
+    setHasAttemptedSubmit(false)
+    onClose()
+  }, [onClose])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -34,6 +38,21 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   }, [handleClose, isOpen])
 
   if (!isOpen) return null
+
+  const isValidEmail = /\S+@\S+\.\S+/.test(email)
+  const emailError = hasAttemptedSubmit
+    ? isValidEmail
+      ? ''
+      : email.trim()
+        ? '올바른 이메일 주소를 입력해주세요.'
+        : '이메일을 입력해주세요.'
+    : ''
+  const consentError = hasAttemptedSubmit && !consent ? '개인정보 수집·이용에 동의해주세요.' : ''
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setHasAttemptedSubmit(true)
+  }
 
   const decoration = (className, src, alt = '') => (
     <div className={`release-benefit__deco ${className}`} aria-hidden="true">
@@ -88,7 +107,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
 
           <form
             className="release-benefit-modal__form"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={handleSubmit}
           >
             <label htmlFor="release-benefit-email">쿠폰 받을 이메일</label>
             <input
@@ -98,7 +117,14 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
               onChange={(event) => setEmail(event.target.value)}
               placeholder="example@gmail.com"
               autoComplete="email"
+              aria-invalid={Boolean(emailError)}
+              aria-describedby={emailError ? 'release-benefit-email-error' : undefined}
             />
+            {emailError && (
+              <p id="release-benefit-email-error" className="release-benefit-modal__error" role="alert">
+                {emailError}
+              </p>
+            )}
             <div className="release-benefit-modal__consent-row">
               <label className="release-benefit-modal__consent">
                 <input
@@ -111,6 +137,11 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
               </label>
               <button type="button" className="release-benefit-modal__view">보기</button>
             </div>
+            {consentError && (
+              <p className="release-benefit-modal__error release-benefit-modal__consent-error" role="alert">
+                {consentError}
+              </p>
+            )}
             <button
               type="submit"
               className="release-benefit-modal__submit"
