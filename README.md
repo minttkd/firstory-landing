@@ -85,7 +85,7 @@ git push -u origin feat/hero-illustration
 - [x] 오뮤 다예쁨체 웹폰트 연결 (원본 변환, 3.4MB)
 - [ ] 오뮤 폰트 용량 줄이기 (오뮤다이어리 허락 후 subset)
 - [ ] 폰트 라이선스 확인 (Memoment 꾹꾹체: 웹 임베딩/수정·재배포 가능 여부, 공개 레포에 파일을 올려도 되는지)
-- [ ] FAQ 2·3번 답변 문구 확정 (`Faq.jsx`, 현재 임시 문구)
+- [x] FAQ 2·3번 답변 문구 반영 (`Faq.jsx`)
 - [ ] 버튼 링크 연결 (`src/config.js`: `CTA_URL`, `SAMPLE_BOOK_URL`, `GUIDE_URL`) 및 푸터 문의 이메일
 - [x] 이미지 최적화 (PNG → WebP, 크기 조정)
 - [ ] 태블릿/모바일 디자인 확정 후 반응형 보완 (현재는 임시 대응)

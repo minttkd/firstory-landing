@@ -6,7 +6,7 @@ import iconClose from '../assets/icons/icon-close.svg'
 import iconPlus from '../assets/icons/icon-plus.svg'
 import './Faq.css'
 
-// 2·3번 답변은 디자인 시안에 없어서 임시 문구예요. 확정되면 교체해주세요.
+// answer 배열의 각 항목은 줄바꿈(<br />)으로 구분돼요.
 const FAQS = [
   {
     question: '우리 아이의 상황은 동화에 어떻게 반영되나요?',
@@ -17,11 +17,14 @@ const FAQS = [
   },
   {
     question: '아이 정보는 어떻게 사용되고 보관되나요?',
-    answer: ['답변을 준비하고 있어요.'],
+    answer: ['입력한 정보는 맞춤 동화를 만드는 데 필요한 범위에서만 사용되며, 개인정보 처리 기준에 따라 안전하게 관리돼요.'],
   },
   {
     question: '동화를 활용한 아이와의 대화 가이드는 어떻게 제공되나요?',
-    answer: ['답변을 준비하고 있어요.'],
+    answer: [
+      '완성된 동화와 함께 이야기의 주제와 대화 포인트를 한눈에 볼 수 있는 가이드를 제공해요.',
+      '동화 속에 담긴 두 가지 질문을 언제, 어떤 방식으로 활용하면 좋은지 구체적인 설명도 함께 확인할 수 있어요.',
+    ],
   },
 ]
 
