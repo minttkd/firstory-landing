@@ -87,7 +87,7 @@ export default function Problem() {
 
           {/* 장식 띠: Figma 캔버스에서는 말풍선 오른쪽 위에 떠 있었지만 어색해서, 요청에 따라
               말풍선 바로 위(왼쪽 끝은 아기 스티커 뒤, 아래쪽은 말풍선 뒤)에 깔리도록 옮겼어요 */}
-          <Placed cx={435.34} cy={1161.77} w={362.434} h={91.339} rotate={178.5} flipY>
+          <Placed cx={435.34} cy={1158.77} w={362.434} h={91.339} rotate={178.5} flipY>
             <img src={barFlip} alt="" />
           </Placed>
           <Placed cx={461} cy={1210} w={483} h={72.949} rotate={-2.95}>
