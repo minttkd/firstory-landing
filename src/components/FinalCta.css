@@ -9,12 +9,12 @@
 /* 배경 이미지는 6px 블러 처리. 가장자리가 투명해지지 않도록 살짝 키워요 */
 .cta__bg {
   position: absolute;
-  top: 1.6px; /* Figma: 섹션 시작보다 2px 아래(4421) - 이미지 보정 0.4px */
+  top: 2px; /* Figma: 섹션 시작(4419)보다 2px 아래(4421) */
   left: -21px;
   width: max(1465px, 100% + 42px);
-  height: 665px; /* Figma: 626px의 106.19% */
-  object-fit: fill;
-  filter: blur(6.05px);
+  height: 626px;
+  object-fit: cover; /* Figma Rectangle 56: 1465x626, object-cover, blur 5px */
+  filter: blur(5px);
   pointer-events: none;
 }
 
