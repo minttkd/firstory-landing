@@ -1,15 +1,15 @@
 import useFitScale from '../hooks/useFitScale'
 import glowLarge from '../assets/icons/glow-large.svg'
 import glowSmall from '../assets/icons/glow-small.svg'
-import thinking from '../assets/images/problem-thinking.png'
-import barFlip from '../assets/images/bar-flip.png'
-import barB from '../assets/images/bar-b.png'
-import barC from '../assets/images/bar-c.png'
-import noteCoral1 from '../assets/images/note-coral-1.png'
-import noteCoral2 from '../assets/images/note-coral-2.png'
-import noteWhite1 from '../assets/images/note-white-1.png'
-import noteWhite2 from '../assets/images/note-white-2.png'
-import characters from '../assets/images/characters.png'
+import thinking from '../assets/images/problem-thinking.webp'
+import barFlip from '../assets/images/bar-flip.webp'
+import barB from '../assets/images/bar-b.webp'
+import barC from '../assets/images/bar-c.webp'
+import noteCoral1 from '../assets/images/note-coral-1.webp'
+import noteCoral2 from '../assets/images/note-coral-2.webp'
+import noteWhite1 from '../assets/images/note-white-1.webp'
+import noteWhite2 from '../assets/images/note-white-2.webp'
+import characters from '../assets/images/characters.webp'
 import './Problem.css'
 
 const STAGE_WIDTH = 1440
@@ -45,7 +45,7 @@ function Box({ left, top, w, h, className = '', children }) {
   )
 }
 
-// characters.png 스프라이트에서 한 캐릭터만 잘라 보여줘요.
+// characters.webp 스프라이트에서 한 캐릭터만 잘라 보여줘요.
 function Sprite({ crop }) {
   return (
     <div className="sprite">
