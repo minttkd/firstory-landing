@@ -6,6 +6,7 @@ import barFlip from '../assets/images/bar-flip.webp'
 import barB from '../assets/images/bar-b.webp'
 import barC from '../assets/images/bar-c.webp'
 import noteCoral1 from '../assets/images/note-coral-1.webp'
+import noteCoral2 from '../assets/images/note-coral-2.webp'
 import noteWhite1 from '../assets/images/note-white-1.webp'
 import noteWhite2 from '../assets/images/note-white-2.webp'
 import characters from '../assets/images/characters.webp'
@@ -16,10 +17,15 @@ const STAGE_HEIGHT = 687
 const ORIGIN_Y = 1040 // Figma 기준 스테이지 시작 y
 
 const QUOTES = [
+  '동생이 태어난다는 걸 어떻게 설명해야 할까요?',
   '처음 유치원 가는 날, 겁먹은 아이에게 무슨 말을 해줄까요?',
   '친구랑 싸우고 온 날, 뭐라고 해줘야 할지 몰랐어요',
   '키우던 강아지가 세상을 떠났을 때, 어떻게 위로할까요?',
 ]
+
+// "동생이 태어난다는 걸…" 묶음: Figma 프레임 밖(캔버스 x≈6474, y≈2146)에 따로 있던 4개 요소를
+// 서로의 상대 배치를 유지한 채 왼쪽 위 빈 자리(x=164, y=1110)로 옮겼어요.
+// 디자이너가 프레임 안에 위치를 확정하면 아래 좌표만 바꿔주세요.
 
 // 중심 좌표(cx, cy)와 크기로 배치하고 중심 기준으로 회전/기울여요.
 function Placed({ cx, cy, w, h, rotate = 0, skewX = 0, flipY = false, className = '', children }) {
@@ -79,6 +85,26 @@ export default function Problem() {
             />
           </Box>
 
+          <Placed cx={407.054} cy={1246.356} w={483} h={72.949} rotate={-2.95}>
+            <img src={noteCoral2} alt="" />
+          </Placed>
+          <Placed
+            cx={406.779}
+            cy={1230.579}
+            w={384}
+            h={32.17}
+            rotate={-2.65}
+            className="stage__text stage__text--light"
+          >
+            {QUOTES[0]}
+          </Placed>
+          <Placed cx={739.051} cy={1171.568} w={362.434} h={91.339} rotate={178.5} flipY>
+            <img src={barFlip} alt="" />
+          </Placed>
+          <Placed cx={227.23} cy={1158.83} w={97.65} h={97.65}>
+            <Sprite crop={{ height: '235.39%', left: '-199.38%', top: '-122.94%', width: '353.09%' }} />
+          </Placed>
+
           <Placed cx={1056.391} cy={1236.3175} w={362.434} h={91.339} rotate={176.63} flipY>
             <img src={barFlip} alt="" />
           </Placed>
@@ -114,17 +140,17 @@ export default function Problem() {
             skewX={0.12}
             className="stage__text stage__text--light"
           >
-            {QUOTES[0]}
+            {QUOTES[1]}
           </Placed>
           <Placed cx={1036.059} cy={1287.6635} w={411} h={24} rotate={7.83} className="stage__text">
-            {QUOTES[1]}
+            {QUOTES[2]}
           </Placed>
 
           <Placed cx={249.7725} cy={1478.809} w={458} h={115} rotate={0.79}>
             <img src={barC} alt="" />
           </Placed>
           <Placed cx={1114.613} cy={1498.8335} w={456.928} h={24} rotate={-0.46} className="stage__text">
-            {QUOTES[2]}
+            {QUOTES[3]}
           </Placed>
 
           <Placed cx={113.6165} cy={1365.8245} w={95.427} h={133.06} rotate={-4.17}>
