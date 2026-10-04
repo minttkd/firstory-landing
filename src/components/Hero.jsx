@@ -19,7 +19,7 @@ export default function Hero() {
           맞춤 동화로 시작하세요.
         </h1>
         <p className="hero__desc">어려웠던 이야기도 아이의 눈높이에서 자연스럽게 나눌 수 있어요.</p>
-        <Button href="#sample" width={255} arrow={arrowRight}>
+        <Button href="#cta" width={255} arrow={arrowRight}>
           FIRSTORY 미리 만나보기
         </Button>
       </div>
