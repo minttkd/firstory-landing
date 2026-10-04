@@ -85,6 +85,11 @@ export default function Problem() {
             />
           </Box>
 
+          {/* 장식 띠: Figma 캔버스에서는 말풍선 오른쪽 위에 떠 있었지만 어색해서, 요청에 따라
+              말풍선 바로 위(왼쪽 끝은 아기 스티커 뒤, 아래쪽은 말풍선 뒤)에 깔리도록 옮겼어요 */}
+          <Placed cx={400.34} cy={1164.77} w={362.434} h={91.339} rotate={178.5} flipY>
+            <img src={barFlip} alt="" />
+          </Placed>
           <Placed cx={461} cy={1210} w={483} h={72.949} rotate={-2.95}>
             <img src={noteCoral2} alt="" />
           </Placed>
@@ -97,9 +102,6 @@ export default function Problem() {
             className="stage__text stage__text--light"
           >
             {QUOTES[0]}
-          </Placed>
-          <Placed cx={792.997} cy={1135.211} w={362.434} h={91.339} rotate={178.5} flipY>
-            <img src={barFlip} alt="" />
           </Placed>
           <Placed cx={281.176} cy={1122.474} w={97.65} h={97.65}>
             <Sprite crop={{ height: '235.39%', left: '-199.38%', top: '-122.94%', width: '353.09%' }} />
