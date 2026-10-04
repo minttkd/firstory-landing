@@ -1,0 +1,105 @@
+.hero {
+  position: relative;
+  height: 944px;
+  overflow: hidden;
+  background: var(--color-page);
+}
+
+/* 이미지에 좌측/하단 페이드가 이미 포함되어 있어요 */
+.hero__bg {
+  position: absolute;
+  top: -161px;
+  left: 0;
+  width: max(1480px, 100%);
+  height: 1105px;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  padding-top: 9px;
+}
+
+.hero__logo {
+  font-family: var(--font-logo);
+  font-size: 35px;
+  line-height: 42px;
+  letter-spacing: -1.05px;
+  color: var(--color-primary);
+}
+
+.hero__badge {
+  display: inline-block;
+  margin-top: 175px;
+  padding: 5px 28px;
+  border-radius: 30px;
+  background: #242424;
+  font-family: var(--font-hand);
+  font-size: 18px;
+  line-height: 1.5;
+  color: #fff;
+}
+
+.hero__title {
+  margin-top: 35px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.18;
+  letter-spacing: 0.5px;
+}
+
+.hero__desc {
+  margin: 12px 0 73px;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 1.34;
+  color: var(--color-text-sub);
+}
+
+.hero__scroll {
+  position: absolute;
+  top: 805px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transform: translateX(-50%);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: 760px;
+  }
+
+  .hero__bg {
+    top: auto;
+    bottom: 0;
+    height: 560px;
+    object-position: 70% center;
+  }
+
+  .hero__badge {
+    margin-top: 80px;
+  }
+
+  .hero__title {
+    font-size: 34px;
+  }
+
+  .hero__desc {
+    max-width: 480px;
+    font-size: 18px;
+  }
+
+  .hero__scroll {
+    top: auto;
+    bottom: 32px;
+  }
+}

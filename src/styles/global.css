@@ -1,20 +1,28 @@
+/* 디자인 토큰 (Figma: 겨울잠_Firstory / Desktop - 1) */
 :root {
-  --bg: #fff8ee;
-  --surface: #ffffff;
-  --ink: #2b2540;
-  --muted: #655f7a;
-  --line: #eadfce;
+  --color-primary: #ff8a5b;
+  --color-mint: #55c99a;
+  --color-ink: #000;
+  --color-text-sub: #525252;
+  --color-cream: #ffebba;
+  --color-peach: #fff4ee;
+  --color-page: #fcfcf9; /* rgba(251,251,247,0.7) 위 white */
+  --color-white: #fff;
+  --color-footer-bg: #f2f2f2;
+  --color-footer-text: #8c8c8c;
 
-  --coral: #ff8a6b;
-  --yellow: #ffd66b;
-  --sky: #bfe3ff;
-  --mint: #cdefd8;
-  --lilac: #e1d7ff;
+  /* Memoment 꾹꾹체 / 오뮤 다예쁨체는 시스템에 설치된 폰트를 우선 사용하고,
+     없으면 비슷한 느낌의 웹폰트(Gaegu)로 대체돼요. 폰트 파일(woff2)이 생기면 이 파일에 @font-face를 추가하세요. */
+  --font-logo: 'Darumadrop One', 'Gaegu', cursive;
+  --font-title: 'MemomentKkukkukk', 'Memoment Kkukkukk', 'Gaegu', 'Pretendard Variable', sans-serif;
+  --font-hand: 'omyu_pretty', 'Omyu Pretty', 'Gaegu', 'Pretendard Variable', sans-serif;
+  --font-body: 'Pretendard Variable', Pretendard, -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+  --font-footer: 'Noto Sans KR', var(--font-body);
 
-  --radius: 20px;
-  --shadow: 0 10px 30px rgba(43, 37, 64, 0.08);
-  --container: 1120px;
-  --header-h: 68px;
+  --shadow-card: 0 0 16.7px rgba(0, 0, 0, 0.12);
+  --shadow-faq: 0 0 4.8px rgba(0, 0, 0, 0.21);
+  --container: 1200px;
+  --design-width: 1440px;
 }
 
 *,
@@ -25,15 +33,14 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-h);
 }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
-  line-height: 1.65;
+  background: var(--color-page); /* 상단~이용 방법 구간 배경. 이후 섹션은 각자 배경을 가져요 */
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
   word-break: keep-all;
   -webkit-font-smoothing: antialiased;
 }
@@ -41,22 +48,21 @@ body {
 h1,
 h2,
 h3,
-p {
-  margin: 0;
-}
-
-h1,
-h2,
-h3 {
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-}
-
+p,
 ul,
 ol {
   margin: 0;
   padding: 0;
+}
+
+ul,
+ol {
   list-style: none;
+}
+
+img {
+  display: block;
+  max-width: none;
 }
 
 a {
@@ -65,123 +71,48 @@ a {
 }
 
 button {
+  padding: 0;
+  border: 0;
+  background: none;
   font: inherit;
   color: inherit;
+  cursor: pointer;
 }
 
 :focus-visible {
-  outline: 3px solid var(--ink);
+  outline: 3px solid var(--color-ink);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
 .container {
-  width: min(100% - 40px, var(--container));
+  width: min(var(--container), 100% - 48px);
   margin-inline: auto;
 }
 
-.section {
-  padding: 96px 0;
-}
-
-.section-head {
-  max-width: 640px;
-  margin-bottom: 48px;
-}
-
-.section-head.center {
-  margin-inline: auto;
-  text-align: center;
-}
-
-.eyebrow {
-  display: inline-block;
-  margin-bottom: 14px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: var(--yellow);
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
+/* 섹션 제목: Memoment 40px */
 .section-title {
-  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
-  font-weight: 800;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.2;
+  letter-spacing: 0.4px;
 }
 
-.section-desc {
-  margin-top: 16px;
-  color: var(--muted);
-  font-size: 1.05rem;
+/* 데코 이미지는 클릭/선택 대상이 아님 */
+.deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
 }
 
-/* 버튼 */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 26px;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 0 var(--ink);
-}
-
-.btn-primary {
-  background: var(--ink);
-  color: #fff;
-}
-
-.btn-primary:hover {
-  box-shadow: 0 6px 0 var(--coral);
-}
-
-.btn-ghost {
-  background: transparent;
-}
-
-.btn-sm {
-  padding: 8px 18px;
-  font-size: 0.92rem;
-}
-
-/* 스크롤 등장 애니메이션 (useReveal) */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (max-width: 720px) {
-  .section {
-    padding: 64px 0;
+@media (max-width: 760px) {
+  .section-title {
+    font-size: 30px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .btn {
-    transition: none;
   }
 }

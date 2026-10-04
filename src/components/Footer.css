@@ -1,0 +1,15 @@
+.footer {
+  display: flex;
+  align-items: center;
+  height: 92px;
+  background: var(--color-footer-bg);
+}
+
+.footer p {
+  font-family: var(--font-footer);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-footer-text);
+  white-space: pre-wrap;
+}

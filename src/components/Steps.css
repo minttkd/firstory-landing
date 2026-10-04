@@ -1,0 +1,128 @@
+.steps {
+  position: relative;
+  padding: 54px 0 62px;
+  overflow: hidden;
+  /* 위 섹션의 글로우가 비쳐 보이도록 투명에서 시작 (Figma: 18.182% → 110.02%) */
+  background: linear-gradient(180deg, rgba(255, 138, 91, 0) 18.182%, rgba(255, 138, 91, 0.5) 110.02%);
+}
+
+.steps > .container {
+  position: relative;
+}
+
+.steps__sub {
+  margin-top: 6px;
+  font-size: 20px;
+  line-height: 1.34;
+}
+
+.steps__cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 27px;
+  margin-top: 119px;
+}
+
+.step-card {
+  position: relative;
+  flex: 0 1 382px;
+  min-height: 442px;
+  padding: 34px 23px 29px;
+  border-radius: 19px;
+  background: #fff;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.step-card__badge {
+  position: absolute;
+  top: -57px;
+  left: 50%;
+  width: 106px;
+  height: 84px;
+  margin-left: -53px;
+}
+
+.step-card__badge img {
+  width: 106px;
+  height: 84px;
+  object-fit: cover;
+}
+
+.step-card__badge span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-top: 8px;
+  font-family: var(--font-title);
+  font-size: 40px;
+  line-height: 1.34;
+}
+
+.step-card__image {
+  width: 100%;
+  max-width: 335px;
+  height: 251px;
+  margin: 0 auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.step-card h3 {
+  margin-top: 23px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.34;
+}
+
+.step-card p {
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.34;
+}
+
+.steps__decos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.steps__deco {
+  position: absolute;
+}
+
+.steps__deco img {
+  position: absolute;
+}
+
+.steps__deco:not(.steps__deco--triangle) {
+  transform: rotate(-90deg) scaleY(-1);
+}
+
+.steps__deco--triangle {
+  width: 95.107px;
+  height: 95.107px;
+  transform: rotate(-21.88deg);
+}
+
+.steps__deco--triangle img {
+  inset: -86.97% -278.08% -462.44% -278.08%;
+  width: auto;
+  height: auto;
+}
+
+@media (max-width: 1000px) {
+  .steps__cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 90px;
+  }
+
+  .step-card {
+    flex: none;
+    width: min(100%, 382px);
+  }
+}
