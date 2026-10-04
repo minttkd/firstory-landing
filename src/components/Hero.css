@@ -1,8 +1,21 @@
+/* 디자인은 944px 높이지만, 화면이 더 작으면 첫 화면 안에 "아래로 내려 더보기"가 보이도록 화면 높이에 맞춰요 */
 .hero {
+  --hero-h: clamp(680px, 100vh, 944px);
+  --hero-h: clamp(680px, 100svh, 944px);
   position: relative;
-  height: 944px;
+  height: var(--hero-h);
   overflow: hidden;
   background: var(--color-page);
+}
+
+/* 화면 높이에 맞춰 이미지가 잘릴 때 아래 경계가 딱딱하지 않도록 페이드 처리 */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 72px;
+  background: linear-gradient(to bottom, rgba(252, 252, 249, 0), var(--color-page));
+  pointer-events: none;
 }
 
 /* 이미지에 좌측/하단 페이드가 이미 포함되어 있어요 */
@@ -60,7 +73,7 @@
 
 .hero__scroll {
   position: absolute;
-  top: 805px;
+  top: min(805px, calc(var(--hero-h) - 110px)); /* 큰 화면에서는 디자인 값(805px) 그대로 */
   left: 50%;
   display: flex;
   flex-direction: column;
@@ -75,7 +88,8 @@
 
 @media (max-width: 900px) {
   .hero {
-    height: 760px;
+    --hero-h: clamp(620px, 100vh, 760px);
+    --hero-h: clamp(620px, 100svh, 760px);
   }
 
   .hero__bg {
@@ -98,8 +112,4 @@
     font-size: 18px;
   }
 
-  .hero__scroll {
-    top: auto;
-    bottom: 32px;
-  }
 }

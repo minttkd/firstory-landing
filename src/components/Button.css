@@ -31,7 +31,7 @@
 }
 
 .btn--gradient {
-  --btn-bg: linear-gradient(99.09deg, #ff8a5b 3.15%, #ffc2a9 50.26%, #ff9c75 97.37%);
+  --btn-bg: linear-gradient(98.12deg, #ff8a5b 3.15%, #ffc2a9 50.26%, #ff9c75 97.37%);
   --btn-glow: rgba(255, 255, 255, 0.71);
   --btn-color: #1e1e1e;
 }
