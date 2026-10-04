@@ -1,18 +1,21 @@
 .problem {
   position: relative;
-  padding-top: 3px;
+  padding-top: 47px;
   overflow-x: clip;
 }
 
-.problem .section-title {
-  padding-top: 0;
+/* Figma: 제목 left 113px (다른 섹션 제목은 120px) */
+@media (min-width: 901px) {
+  .problem .section-title {
+    margin-left: -7px;
+  }
 }
 
 .problem__fit {
   position: relative;
   width: 100%;
   max-width: var(--design-width);
-  margin: 45px auto 0;
+  margin: 1px auto 0;
 }
 
 .stage {

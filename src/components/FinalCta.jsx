@@ -10,10 +10,10 @@ export default function FinalCta() {
       <img className="cta__bg" src={ctaBg} alt="" aria-hidden="true" />
 
       <div className="cta__inner">
-        <h2 className="section-title">우리 아이의 첫 이야기, 가장 먼저 만나보세요</h2>
-        <p>지금 사전 예약하고, 출시 후 첫 맞춤 동화를 특별한 가격으로 만나보세요</p>
-        <Button href={CTA_URL} variant="gradient" width={286} arrow={arrowCta}>
-          내 아이 맞춤 동화 만들어보기
+        <h2 className="section-title">우리 아이의 첫 이야기를 가장 먼저 만나보세요</h2>
+        <p>출시 3일 전, FIRSTORY 소식과 할인 쿠폰을 이메일로 보내드려요.</p>
+        <Button href={CTA_URL} variant="gradient" width={255} arrow={arrowCta}>
+          FIRSTORY 출시 혜택 받기
         </Button>
       </div>
     </section>
