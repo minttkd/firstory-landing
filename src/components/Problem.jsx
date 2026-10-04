@@ -94,8 +94,8 @@ export default function Problem() {
             <img src={noteCoral2} alt="" />
           </Placed>
           <Placed
-            cx={460.725}
-            cy={1194.223}
+            cx={460.14}
+            cy={1203.01}
             w={384}
             h={32.17}
             rotate={-2.65}
