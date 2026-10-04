@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import modalShape from '../assets/figma/release-benefit/modal-shape.svg'
 import line from '../assets/figma/release-benefit/deco-1.svg'
 import closeCircle from '../assets/figma/release-benefit/deco-2.svg'
@@ -11,20 +11,96 @@ import glowFarRight from '../assets/figma/release-benefit/deco-4.svg'
 import './ReleaseBenefitModal.css'
 
 export default function ReleaseBenefitModal({ isOpen, onClose }) {
+  const MODAL_CLOSE_DURATION = 320
+  const FEEDBACK_CLOSE_DURATION = 220
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+  const [isFeedbackClosing, setIsFeedbackClosing] = useState(false)
+  const [isModalClosing, setIsModalClosing] = useState(false)
+  const feedbackCloseTimerRef = useRef(null)
+  const modalCloseTimerRef = useRef(null)
 
-  const handleClose = useCallback(() => {
-    setHasAttemptedSubmit(false)
-    onClose()
-  }, [onClose])
+  useEffect(() => {
+    const preloadModalAssets = () => {
+      const image = new Image()
+      image.decoding = 'async'
+      image.src = modalShape
+
+      if (document.fonts?.load) {
+        document.fonts.load("400 42px 'MemomentKkukkukkFull'")
+      }
+    }
+
+    let idleHandle
+    let usesIdleCallback = false
+
+    if ('requestIdleCallback' in window) {
+      idleHandle = window.requestIdleCallback(preloadModalAssets, { timeout: 1200 })
+      usesIdleCallback = true
+    } else {
+      idleHandle = window.setTimeout(preloadModalAssets, 700)
+    }
+
+    return () => {
+      if (usesIdleCallback) window.cancelIdleCallback(idleHandle)
+      else window.clearTimeout(idleHandle)
+    }
+  }, [])
+
+  const requestClose = useCallback(() => {
+    if (feedbackCloseTimerRef.current) {
+      window.clearTimeout(feedbackCloseTimerRef.current)
+      feedbackCloseTimerRef.current = null
+    }
+    setIsFeedbackClosing(false)
+    setIsFeedbackOpen(true)
+  }, [])
+
+  const closePopup = useCallback(() => {
+    if (isModalClosing) return
+
+    setIsModalClosing(true)
+    modalCloseTimerRef.current = window.setTimeout(() => {
+      setIsModalClosing(false)
+      modalCloseTimerRef.current = null
+      onClose()
+    }, MODAL_CLOSE_DURATION)
+  }, [isModalClosing, onClose])
+
+  const closeFeedback = useCallback((closeParent = false) => {
+    if (isFeedbackClosing) return
+
+    setIsFeedbackClosing(true)
+    if (closeParent) closePopup()
+    feedbackCloseTimerRef.current = window.setTimeout(() => {
+      setIsFeedbackOpen(false)
+      setIsFeedbackClosing(false)
+      feedbackCloseTimerRef.current = null
+
+      if (closeParent) setHasAttemptedSubmit(false)
+    }, FEEDBACK_CLOSE_DURATION)
+  }, [closePopup, isFeedbackClosing])
+
+  const handleFeedbackSelect = useCallback(() => closeFeedback(true), [closeFeedback])
+
+  useEffect(() => () => {
+    if (feedbackCloseTimerRef.current) {
+      window.clearTimeout(feedbackCloseTimerRef.current)
+    }
+    if (modalCloseTimerRef.current) {
+      window.clearTimeout(modalCloseTimerRef.current)
+    }
+  }, [])
 
   useEffect(() => {
     if (!isOpen) return undefined
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') handleClose()
+      if (event.key !== 'Escape') return
+      if (isFeedbackOpen) closeFeedback()
+      else requestClose()
     }
 
     const previousOverflow = document.body.style.overflow
@@ -35,7 +111,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       document.body.style.overflow = previousOverflow
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [handleClose, isOpen])
+  }, [closeFeedback, isFeedbackOpen, isOpen, requestClose])
 
   if (!isOpen) return null
 
@@ -51,6 +127,13 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+
+    if (isValidEmail && consent) {
+      setHasAttemptedSubmit(false)
+      closePopup()
+      return
+    }
+
     setHasAttemptedSubmit(true)
   }
 
@@ -67,9 +150,9 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="release-benefit-overlay"
+      className={`release-benefit-overlay${isModalClosing ? ' release-benefit-overlay--closing' : ''}`}
       role="presentation"
-      onMouseDown={(event) => event.target === event.currentTarget && handleClose()}
+      onMouseDown={(event) => event.target === event.currentTarget && requestClose()}
     >
       <div className="release-benefit__decorations" aria-hidden="true">
         {decoration('release-benefit__deco--left', glowLargeLeft)}
@@ -80,15 +163,15 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       </div>
 
       <section
-        className="release-benefit-modal"
+        className={`release-benefit-modal${isModalClosing ? ' release-benefit-modal--closing' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="release-benefit-title"
       >
-        <img className="release-benefit-modal__shape" src={modalShape} alt="" aria-hidden="true" />
-        <img className="release-benefit-modal__line" src={line} alt="" aria-hidden="true" />
+        <img className="release-benefit-modal__shape" src={modalShape} alt="" aria-hidden="true" decoding="async" />
+        <img className="release-benefit-modal__line" src={line} alt="" aria-hidden="true" decoding="async" />
 
-        <button type="button" className="release-benefit-modal__close" onClick={handleClose} aria-label="닫기">
+        <button type="button" className="release-benefit-modal__close" onClick={requestClose} aria-label="닫기">
           <img src={closeCircle} alt="" aria-hidden="true" />
           <img src={closeIcon} alt="" aria-hidden="true" />
         </button>
@@ -151,6 +234,30 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
           </form>
         </div>
       </section>
+
+      {isFeedbackOpen && (
+        <div
+          className={`release-feedback-overlay${isFeedbackClosing ? ' release-feedback-overlay--closing' : ''}`}
+          role="presentation"
+        >
+          <section
+            className={`release-feedback-modal${isFeedbackClosing ? ' release-feedback-modal--closing' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="release-feedback-title"
+          >
+            <h2 id="release-feedback-title">가격이 어떻게 느껴지셨나요?</h2>
+            <p>더 좋은 서비스를 위해 의견을 들려주세요</p>
+            <div className="release-feedback-modal__options">
+              {['비싸다', '적당하다', '저렴하다', '기타'].map((option) => (
+                <button type="button" key={option} onClick={handleFeedbackSelect}>
+                  {option}
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   )
 }
