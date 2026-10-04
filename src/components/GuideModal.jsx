@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import iconClose from '../assets/icons/icon-close.svg'
 import iconSprite from '../assets/images/guide-icons/node-image154.png'
 import './GuideModal.css'
@@ -53,12 +53,25 @@ function GuideIcon({ type }) {
 
 export default function GuideModal({ isOpen, onClose }) {
   const [openIndexes, setOpenIndexes] = useState([])
+  const [isClosing, setIsClosing] = useState(false)
+  const closeTimerRef = useRef(null)
+  const closingRef = useRef(false)
+
+  const handleClose = useCallback(() => {
+    if (closingRef.current) return
+
+    closingRef.current = true
+    setIsClosing(true)
+    closeTimerRef.current = window.setTimeout(onClose, 220)
+  }, [onClose])
 
   useEffect(() => {
     if (!isOpen) return undefined
 
+    closingRef.current = false
+
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') onClose()
+      if (event.key === 'Escape') handleClose()
     }
 
     document.body.style.overflow = 'hidden'
@@ -67,20 +80,25 @@ export default function GuideModal({ isOpen, onClose }) {
     return () => {
       document.body.style.overflow = ''
       document.removeEventListener('keydown', handleKeyDown)
+      window.clearTimeout(closeTimerRef.current)
     }
-  }, [isOpen, onClose])
+  }, [handleClose, isOpen])
 
   if (!isOpen) return null
 
   return (
-    <div className="guide-modal-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+    <div
+      className={`guide-modal-overlay${isClosing ? ' is-closing' : ''}`}
+      role="presentation"
+      onMouseDown={(event) => event.target === event.currentTarget && handleClose()}
+    >
       <section
-        className={`guide-modal${openIndexes.length > 0 ? ' is-scrollable' : ''}`}
+        className={`guide-modal${openIndexes.length > 0 ? ' is-scrollable' : ''}${isClosing ? ' is-closing' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="guide-modal-title"
       >
-        <button type="button" className="guide-modal__close" onClick={onClose} aria-label="대화 가이드 닫기">
+        <button type="button" className="guide-modal__close" onClick={handleClose} aria-label="대화 가이드 닫기">
           <img src={iconClose} alt="" width="28" height="28" />
         </button>
 
@@ -113,10 +131,12 @@ export default function GuideModal({ isOpen, onClose }) {
                     </span>
                   </button>
 
-                  <div className="guide-modal__detail" hidden={!isOpenItem}>
-                    {item.detail.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
+                  <div className="guide-modal__detail" aria-hidden={!isOpenItem}>
+                    <div className="guide-modal__detail-inner">
+                      {item.detail.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
                   </div>
                 </article>
               )
