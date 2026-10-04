@@ -103,7 +103,7 @@ export default function Problem() {
           >
             {QUOTES[0]}
           </Placed>
-          <Placed cx={281.176} cy={1149.474} w={97.65} h={97.65}>
+          <Placed cx={281.176} cy={1144.474} w={97.65} h={97.65}>
             <Sprite crop={{ height: '235.39%', left: '-199.38%', top: '-122.94%', width: '353.09%' }} />
           </Placed>
 
