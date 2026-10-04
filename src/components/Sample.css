@@ -1,0 +1,148 @@
+.sample {
+  position: relative;
+  padding: 184px 0 55px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* 윗 섹션(Steps)에서 이어지는 호 모양 */
+.sample__arc {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 108px;
+  pointer-events: none;
+}
+
+.sample__circle {
+  position: absolute;
+  pointer-events: none;
+}
+
+.sample__inner {
+  position: relative;
+  width: min(986px, 100% - 48px);
+  margin-inline: auto;
+}
+
+.sample__title {
+  text-align: center;
+}
+
+.sample__book {
+  display: grid;
+  grid-template-columns: 446px 1fr;
+  column-gap: 77px;
+  margin-top: 56px;
+}
+
+.sample__book > img {
+  width: 446px;
+  height: 446px;
+  object-fit: cover;
+}
+
+.sample__book-text {
+  padding-top: 95px;
+}
+
+.sample__book-text p {
+  margin: 24px 0 26px;
+  font-family: var(--font-hand);
+  font-size: 24px;
+  line-height: 1.34;
+  white-space: nowrap;
+}
+
+.sample__guide {
+  display: grid;
+  grid-template-columns: 479px 1fr; /* 479 = 523 - 44(좌측 들여쓰기) */
+  column-gap: 0;
+  margin-top: 50px;
+  padding-left: 44px;
+}
+
+.sample__pill {
+  display: inline-block;
+  height: 42px;
+  padding: 0 24px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  font-family: var(--font-title);
+  font-size: 20px;
+  line-height: 38px;
+  letter-spacing: 0.2px;
+}
+
+.sample__guide-title {
+  margin-top: 10px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.sample__guide-left > img {
+  width: 343px;
+  height: 253px;
+  margin: -4px 0 0 22px;
+  object-fit: cover;
+}
+
+.sample__guide-text {
+  padding-top: 131px;
+}
+
+.sample__guide-text p {
+  margin-bottom: 14px;
+  font-family: var(--font-hand);
+  font-size: 24px;
+  line-height: 1.34;
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .sample {
+    padding-top: 150px;
+  }
+
+  .sample__book,
+  .sample__guide {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: 32px;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .sample__book-text {
+    padding-top: 0;
+  }
+
+  .sample__book-text p,
+  .sample__guide-text p,
+  .sample__guide-title {
+    white-space: normal;
+  }
+
+  .sample__guide-text {
+    padding-top: 0;
+  }
+
+  .sample__guide-left > img {
+    margin: 16px auto 0;
+  }
+
+  .sample .btn {
+    margin-inline: auto;
+  }
+
+  .sample__book > img {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+}

@@ -1,0 +1,102 @@
+.problem {
+  position: relative;
+  padding-top: 3px;
+  overflow-x: clip;
+}
+
+.problem .section-title {
+  padding-top: 0;
+}
+
+.problem__fit {
+  position: relative;
+  width: 100%;
+  max-width: var(--design-width);
+  margin: 45px auto 0;
+}
+
+.stage {
+  position: relative;
+  width: var(--design-width);
+  height: 687px;
+  transform-origin: top left;
+}
+
+.stage__item {
+  position: absolute;
+  pointer-events: none;
+}
+
+.stage__item > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* blur가 포함된 SVG라 박스보다 크게 그려져요 */
+.stage__glow > img {
+  width: auto;
+  height: auto;
+}
+
+.stage__crop {
+  overflow: hidden;
+}
+
+.stage__crop > img {
+  inset: auto;
+  max-width: none;
+}
+
+.sprite {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.sprite img {
+  position: absolute;
+  max-width: none;
+}
+
+.stage__text {
+  font-family: var(--font-hand);
+  font-size: 24px;
+  line-height: 1.34;
+  white-space: nowrap;
+  color: #000;
+}
+
+.stage__text--light {
+  color: #fff;
+  text-shadow: 0 0 2.8px rgba(0, 0, 0, 0.18);
+}
+
+.problem__list {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .problem__fit {
+    display: none;
+  }
+
+  .problem__list {
+    display: grid;
+    gap: 12px;
+    margin-top: 28px;
+    padding-bottom: 48px;
+  }
+
+  .problem__list li {
+    padding: 18px 22px;
+    border-radius: 19px;
+    background: #fff;
+    box-shadow: var(--shadow-card);
+    font-family: var(--font-hand);
+    font-size: 20px;
+    line-height: 1.34;
+  }
+}

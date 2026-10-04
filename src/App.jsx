@@ -1,11 +1,23 @@
-import useReveal from './hooks/useReveal'
+import Hero from './components/Hero'
+import Problem from './components/Problem'
+import Steps from './components/Steps'
+import Sample from './components/Sample'
+import Faq from './components/Faq'
+import FinalCta from './components/FinalCta'
+import Footer from './components/Footer'
 
 export default function App() {
-  useReveal()
-
   return (
-    <main>
-      {/* 디자인 시안에 맞춰 src/components 아래에 섹션을 만들고 여기서 조립해주세요. */}
-    </main>
+    <>
+      <main>
+        <Hero />
+        <Problem />
+        <Steps />
+        <Sample />
+        <Faq />
+        <FinalCta />
+      </main>
+      <Footer />
+    </>
   )
 }
