@@ -63,6 +63,12 @@ export default function Problem() {
 
   return (
     <section className="problem" id="problem">
+      {/* 모바일에서만 보이는 배경 글로우 (데스크톱은 스테이지 안에 있어요) */}
+      <div className="problem__glows" aria-hidden="true">
+        <img className="problem__glow problem__glow--a" src={glowSmall} alt="" />
+        <img className="problem__glow problem__glow--b" src={glowLarge} alt="" />
+      </div>
+
       <div className="container">
         <h2 className="section-title">이런 순간, 있으셨죠?</h2>
       </div>

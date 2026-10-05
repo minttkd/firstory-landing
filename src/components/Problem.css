@@ -81,9 +81,39 @@
   display: none;
 }
 
+.problem__glows {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .problem__fit {
     display: none;
+  }
+
+  /* 글로우는 글/카드 뒤(z-index -1)에 깔리고, 블러가 섹션 밖으로 번져도 자연스럽게 이어져요 */
+  .problem__glows {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .problem__glow {
+    position: absolute;
+    max-width: none;
+  }
+
+  .problem__glow--a {
+    width: 560px;
+    left: -300px;
+    top: -150px;
+  }
+
+  .problem__glow--b {
+    width: 1000px;
+    left: 20%;
+    top: -60px;
   }
 
   .problem__list {

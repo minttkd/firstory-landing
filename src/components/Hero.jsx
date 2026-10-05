@@ -7,7 +7,9 @@ import './Hero.css'
 export default function Hero() {
   return (
     <section className="hero" id="top">
-      <img className="hero__bg" src={heroBg} alt="" />
+      <div className="hero__bg-wrap" aria-hidden="true">
+        <img className="hero__bg" src={heroBg} alt="" />
+      </div>
 
       <div className="container hero__inner">
         <p className="hero__logo">FIRSTORY</p>

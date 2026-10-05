@@ -18,6 +18,13 @@
   pointer-events: none;
 }
 
+.hero__bg-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 /* 이미지에 좌측/하단 페이드가 이미 포함되어 있어요 */
 .hero__bg {
   position: absolute;
@@ -92,11 +99,22 @@
     --hero-h: clamp(620px, 100svh, 760px);
   }
 
+  /* 모바일: 글자 아래쪽 영역에 그림을 넣어요. 그림의 주인공(아이·책·곰 인형)이 있는 오른쪽을 보여주고,
+     위쪽은 부드럽게 사라지게(mask) 해서 글자와 겹쳐도 읽히게 해요. */
+  .hero__bg-wrap {
+    inset: auto 0 0;
+    height: max(260px, calc(var(--hero-h) - 420px));
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 30%);
+  }
+
   .hero__bg {
-    top: auto;
-    bottom: 0;
-    height: 560px;
-    object-position: 70% center;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-position: 82% 70%;
+    scale: 1.25;
+    transform-origin: 82% 70%;
   }
 
   .hero__badge {
