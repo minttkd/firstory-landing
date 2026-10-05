@@ -1,0 +1,230 @@
+.sample-book-modal-overlay {
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.61);
+  backdrop-filter: blur(5.35px);
+  -webkit-backdrop-filter: blur(5.35px);
+  animation: sample-book-overlay-in 180ms ease-out both;
+}
+
+.sample-book-modal {
+  position: relative;
+  width: min(1200px, 100%);
+  height: min(656px, calc(100vh - 48px));
+  height: min(656px, calc(100dvh - 48px));
+  overflow: hidden;
+  border-radius: 19px;
+  background: #fff;
+  animation: sample-book-modal-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sample-book-modal h2 {
+  position: absolute;
+  z-index: 2;
+  top: 32px;
+  left: 46px;
+  font-family: 'MemomentKkukkukkFull', sans-serif;
+  font-size: 35px;
+  font-weight: 400;
+  line-height: 1.34;
+}
+
+.sample-book-modal__close {
+  position: absolute;
+  z-index: 3;
+  top: 35.95px;
+  right: 36px;
+  display: block;
+  width: 28px;
+  height: 26.467px;
+}
+
+.sample-book-modal__close img {
+  width: 28px;
+  height: 26.467px;
+}
+
+.sample-book-modal__book {
+  position: absolute;
+  top: 86px;
+  left: 50%;
+  width: 880.139px;
+  height: 503.993px;
+  transform: translateX(-50%);
+}
+
+.sample-book-modal__frame {
+  position: absolute;
+  top: -19.535px;
+  left: -19.56px;
+  width: 919.241px;
+  height: 543.095px;
+  max-width: none;
+}
+
+.sample-book-modal__paper {
+  position: absolute;
+  top: 17.45px;
+  left: 19.6px;
+  width: 842.697px;
+  height: 467.025px;
+  border-radius: 5.132px;
+  background: #fffcef;
+}
+
+.sample-book-modal__book > img:not(.sample-book-modal__frame):not(.sample-book-modal__divider) {
+  position: absolute;
+  z-index: 1;
+  top: 21.52px;
+  left: 34.96px;
+  width: 810.898px;
+  height: 458.69px;
+  max-width: none;
+  border-radius: 5.132px;
+  object-fit: cover;
+  box-shadow: 0 0 6.745px 1.955px rgba(0, 0, 0, 0.25);
+}
+
+.sample-book-modal__placeholder {
+  position: absolute;
+  z-index: 1;
+  top: 21.52px;
+  left: 34.96px;
+  display: grid;
+  width: 810.898px;
+  height: 458.69px;
+  place-items: center;
+  border-radius: 5.132px;
+  background: #fffcef;
+  color: #afafaf;
+  font-size: 18px;
+  box-shadow: 0 0 6.745px 1.955px rgba(0, 0, 0, 0.25);
+}
+
+.sample-book-modal__divider {
+  position: absolute;
+  z-index: 2;
+  top: 247px;
+  left: 205.8px;
+  width: 468.66px;
+  height: 9.212px;
+  max-width: none;
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+.sample-book-modal__pagination {
+  position: absolute;
+  z-index: 4;
+  bottom: 35px;
+  left: 50%;
+  width: 176px;
+  height: 45px;
+  transform: translateX(-50%);
+  border-radius: 13.86px;
+  background: #fff;
+  box-shadow: 0 2px 2.9px rgba(0, 0, 0, 0.25);
+}
+
+.sample-book-modal__pagination p {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-body);
+  font-size: 15.75px;
+  line-height: 1.34;
+  white-space: nowrap;
+}
+
+.sample-book-modal__pagination p span {
+  color: #afafaf;
+}
+
+.sample-book-modal__arrow {
+  position: absolute;
+  top: 7px;
+  display: block;
+  width: 19.527px;
+  height: 29.161px;
+}
+
+.sample-book-modal__arrow--prev {
+  left: 18px;
+}
+
+.sample-book-modal__arrow--next {
+  right: 19px;
+}
+
+.sample-book-modal__arrow img {
+  display: block;
+  width: 19.527px;
+  height: 29.161px;
+  max-width: none;
+}
+
+.sample-book-modal__arrow--prev img {
+  transform: rotate(180deg) scaleY(-1);
+}
+
+.sample-book-modal__arrow.is-disabled {
+  cursor: default;
+}
+
+@media (max-width: 960px) {
+  .sample-book-modal__book {
+    --book-scale: calc((100vw - 48px) / 880.139);
+    transform: translateX(-50%) scale(var(--book-scale));
+    transform-origin: top center;
+  }
+}
+
+@media (max-width: 760px) {
+  .sample-book-modal-overlay {
+    padding: 10px;
+  }
+
+  .sample-book-modal {
+    height: min(656px, calc(100dvh - 20px));
+    border-radius: 16px;
+  }
+
+  .sample-book-modal h2 {
+    top: 24px;
+    left: 24px;
+    font-size: clamp(25px, 7.8vw, 32px);
+  }
+
+  .sample-book-modal__close {
+    top: 22px;
+    right: 20px;
+  }
+
+  .sample-book-modal__pagination {
+    bottom: 22px;
+  }
+}
+
+@keyframes sample-book-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sample-book-modal-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sample-book-modal-overlay,
+  .sample-book-modal { animation: none; }
+}

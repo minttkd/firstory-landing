@@ -9,6 +9,7 @@ import arrowSample from '../assets/icons/arrow-right-hero.svg'
 import arrowGuide from '../assets/icons/arrow-right-guide.svg'
 import Button from './Button'
 import GuideModal from './GuideModal'
+import SampleBookModal from './SampleBookModal'
 import './Sample.css'
 
 // 배경 원 (Figma 좌표, 1440 기준 / 섹션 시작 y=2485)
@@ -21,6 +22,7 @@ const CIRCLES = [
 
 export default function Sample() {
   const [isGuideOpen, setIsGuideOpen] = useState(false)
+  const [isBookOpen, setIsBookOpen] = useState(false)
 
   return (
     <>
@@ -49,7 +51,12 @@ export default function Sample() {
               <br />
               자신의 마음과 친구의 마음을 알아가는 이야기
             </p>
-            <Button href={SAMPLE_BOOK_URL} width={215} arrow={arrowSample}>
+            <Button
+              href={SAMPLE_BOOK_URL}
+              width={215}
+              arrow={arrowSample}
+              onClick={() => setIsBookOpen(true)}
+            >
               샘플 동화책 읽어보기
             </Button>
           </div>
@@ -80,6 +87,11 @@ export default function Sample() {
         </div>
       </section>
       <GuideModal key={isGuideOpen ? 'open' : 'closed'} isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      <SampleBookModal
+        key={isBookOpen ? 'open' : 'closed'}
+        isOpen={isBookOpen}
+        onClose={() => setIsBookOpen(false)}
+      />
     </>
   )
 }
