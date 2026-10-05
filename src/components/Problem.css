@@ -90,12 +90,16 @@
     display: none;
   }
 
-  /* 글로우는 글/카드 뒤(z-index -1)에 깔리고, 블러가 섹션 밖으로 번져도 자연스럽게 이어져요 */
+  /* 글로우는 글/카드 뒤(z-index -1)에 깔려요.
+     가로로는 화면 폭에서 확실히 잘라서(overflow: hidden) 페이지가 옆으로 넓어지지 않게 하고(구형 사파리/인앱 브라우저는
+     overflow-x: clip을 몰라서 넓어진 페이지가 스크롤 중 확대/축소돼 보일 수 있어요),
+     세로로는 위아래 240px 여유를 둬서 블러가 자연스럽게 이어지게 해요. */
   .problem__glows {
     display: block;
     position: absolute;
-    inset: 0;
+    inset: -240px 0;
     z-index: -1;
+    overflow: hidden;
     pointer-events: none;
   }
 
@@ -107,13 +111,13 @@
   .problem__glow--a {
     width: 560px;
     left: -300px;
-    top: -150px;
+    top: 90px; /* 섹션 기준 -150px + 위 여유 240px */
   }
 
   .problem__glow--b {
     width: 1000px;
     left: 20%;
-    top: -60px;
+    top: 180px; /* 섹션 기준 -60px + 위 여유 240px */
   }
 
   /* 모바일: 같은 말풍선/캐릭터 구성을 세로로 쌓아서 보여줘요 (최대 560px, 가운데 정렬) */
@@ -123,5 +127,6 @@
     width: 100%;
     max-width: 560px;
     margin: 8px auto 48px;
+    overflow: hidden; /* 장식 띠/스티커가 화면 밖으로 삐져나가 페이지가 넓어지지 않게 */
   }
 }
