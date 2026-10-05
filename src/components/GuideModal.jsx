@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import iconClose from '../assets/icons/icon-close.svg'
+import iconClose from '../assets/figma/sample-book/close.svg'
 import iconSprite from '../assets/images/guide-icons/node-image154.png'
 import './GuideModal.css'
 
@@ -99,7 +99,7 @@ export default function GuideModal({ isOpen, onClose }) {
         aria-labelledby="guide-modal-title"
       >
         <button type="button" className="guide-modal__close" onClick={handleClose} aria-label="대화 가이드 닫기">
-          <img src={iconClose} alt="" width="28" height="28" />
+          <img src={iconClose} alt="" width="28" height="26.467" />
         </button>
 
         <div className="guide-modal__scroll">
