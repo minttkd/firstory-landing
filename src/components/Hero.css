@@ -103,13 +103,16 @@
     margin-top: 80px;
   }
 
+  /* 제목 2줄 + 설명 1줄(총 3줄)로 보이도록 글자 크기를 화면 폭에 맞춰 줄여요.
+     실측: 제목 가장 긴 줄 ≈ 10.6em, 설명 한 줄 ≈ 22em (폰트 로드 후). 약간의 여유를 두고 나눴어요.
+     폭이 넓으면 원래 크기(34px / 18px)를 유지해요. */
   .hero__title {
-    font-size: 34px;
+    font-size: min(34px, calc((100vw - 48px) / 11.5));
+    white-space: nowrap; /* 줄바꿈은 <br />로만 */
   }
 
   .hero__desc {
-    max-width: 480px;
-    font-size: 18px;
+    max-width: none;
+    font-size: min(18px, calc((100vw - 48px) / 23));
   }
-
 }
