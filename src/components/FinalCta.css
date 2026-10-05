@@ -43,3 +43,10 @@
     height: 520px;
   }
 }
+
+/* 모바일 글자 크기 (760px 이하) */
+@media (max-width: 760px) {
+  .cta__inner p {
+    font-size: 15px;
+  }
+}

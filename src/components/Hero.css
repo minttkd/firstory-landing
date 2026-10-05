@@ -134,3 +134,21 @@
     font-size: min(18px, calc((100vw - 48px) / 23));
   }
 }
+
+/* 모바일 글자 크기 (760px 이하) */
+@media (max-width: 760px) {
+  .hero__logo {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .hero__badge {
+    margin-top: 88px; /* 로고가 작아진 만큼 보정해 위치는 그대로 */
+    padding: 4px 20px;
+    font-size: 15px;
+  }
+
+  .hero__scroll {
+    font-size: 14px;
+  }
+}
