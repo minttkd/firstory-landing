@@ -107,7 +107,7 @@
   height: 100%;
   max-width: none;
   border-radius: inherit;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .sample-book-modal__placeholder {
@@ -265,8 +265,6 @@
 
 @media (max-width: 960px) {
   .sample-book-modal__book {
-    --book-scale: calc((100vw - 48px) / 880.139);
-    transform: translateX(-50%) scale(var(--book-scale));
     transform-origin: top center;
   }
 }
@@ -274,11 +272,17 @@
 @media (max-width: 760px) {
   .sample-book-modal-overlay {
     padding: 10px;
+    overflow-y: auto;
   }
 
   .sample-book-modal {
-    height: min(656px, calc(100dvh - 20px));
+    height: var(--sample-book-modal-height, min(656px, calc(100dvh - 20px)));
+    overflow: visible;
     border-radius: 16px;
+  }
+
+  .sample-book-modal__book {
+    top: 72px;
   }
 
   .sample-book-modal h2 {

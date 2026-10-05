@@ -51,8 +51,11 @@ export default function SampleBookModal({ isOpen, onClose }) {
   const [page, setPage] = useState(0)
   const [turningPage, setTurningPage] = useState(null)
   const [isClosing, setIsClosing] = useState(false)
+  const [bookScale, setBookScale] = useState(1)
+  const [mobileModalHeight, setMobileModalHeight] = useState(null)
   const closeTimerRef = useRef(null)
   const turnTimerRef = useRef(null)
+  const bookRef = useRef(null)
   const closingRef = useRef(false)
 
   const goToPage = useCallback(
@@ -97,6 +100,61 @@ export default function SampleBookModal({ isOpen, onClose }) {
 
   useEffect(() => () => window.clearTimeout(turnTimerRef.current), [])
 
+  useEffect(() => {
+    if (!isOpen) return undefined
+
+    const book = bookRef.current
+    const modal = book?.parentElement
+
+    if (!book || !modal) return undefined
+
+    const updateBookScale = () => {
+      if (window.innerWidth > 960) {
+        setBookScale(1)
+        setMobileModalHeight(null)
+        return
+      }
+
+      const isSmallMobile = window.innerWidth <= 760
+      const topOffset = isSmallMobile ? 72 : 86
+      const bottomOffset = isSmallMobile ? 22 : 35
+      const paginationHeight = 45
+      const gap = 16
+      const frameWidth = 919.241
+      const frameHeight = 543.095
+      const availableWidth = Math.max(0, modal.clientWidth - 24)
+      const widthScale = availableWidth / frameWidth
+      const reservedHeight = topOffset + bottomOffset + paginationHeight + gap
+
+      if (isSmallMobile) {
+        const viewportModalHeight = Math.max(0, window.innerHeight - 20)
+        const heightScale = (viewportModalHeight - reservedHeight) / frameHeight
+        const scale = Math.max(0.12, Math.min(1, widthScale, heightScale))
+
+        setBookScale(scale)
+        setMobileModalHeight(Math.ceil(reservedHeight + frameHeight * scale))
+        return
+      }
+
+      const availableHeight = Math.max(0, modal.clientHeight - reservedHeight)
+      const heightScale = availableHeight / frameHeight
+
+      setBookScale(Math.max(0.12, Math.min(1, widthScale, heightScale)))
+      setMobileModalHeight(null)
+    }
+
+    updateBookScale()
+
+    const resizeObserver = new ResizeObserver(updateBookScale)
+    resizeObserver.observe(modal)
+    window.addEventListener('resize', updateBookScale)
+
+    return () => {
+      resizeObserver.disconnect()
+      window.removeEventListener('resize', updateBookScale)
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   const image = SAMPLE_PAGES[page]
@@ -111,6 +169,7 @@ export default function SampleBookModal({ isOpen, onClose }) {
     >
       <section
         className={`sample-book-modal${isClosing ? ' is-closing' : ''}`}
+        style={{ '--sample-book-modal-height': mobileModalHeight ? `${mobileModalHeight}px` : undefined }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="sample-book-modal-title"
@@ -120,7 +179,12 @@ export default function SampleBookModal({ isOpen, onClose }) {
           <img src={iconClose} alt="" width="28" height="26.467" />
         </button>
 
-        <div className="sample-book-modal__book" aria-live="polite">
+        <div
+          ref={bookRef}
+          className="sample-book-modal__book"
+          style={{ transform: `translateX(-50%) scale(${bookScale})` }}
+          aria-live="polite"
+        >
           <img className="sample-book-modal__frame" src={bookFrame} alt="" aria-hidden="true" />
           <div className="sample-book-modal__paper" aria-hidden="true" />
           <PageLayer source={image} page={page} />
