@@ -16,11 +16,55 @@ import './SampleBookModal.css'
 
 const SAMPLE_PAGES = [pageOne, pageTwo, pageThree, pageFour, pageFive, pageSix, pageSeven, pageEight]
 
+function PageLayer({ source, page, className = '', ariaHidden = false }) {
+  return (
+    <div className={`sample-book-modal__page-layer${className ? ` ${className}` : ''}`} aria-hidden={ariaHidden}>
+      {source ? (
+        <img src={source} alt={ariaHidden ? '' : `${page + 1}페이지 동화`} />
+      ) : (
+        <div className="sample-book-modal__placeholder">
+          <span>{page + 1}페이지 이미지 준비 중</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PageTurn({ source, direction }) {
+  const pageStyle = source ? { backgroundImage: `url("${source}")` } : undefined
+
+  return (
+    <div className={`sample-book-modal__turning-spread sample-book-modal__turning-spread--${direction}`} aria-hidden="true">
+      <div
+        className="sample-book-modal__turning-half-page sample-book-modal__turning-half-page--left"
+        style={{ ...pageStyle, backgroundPosition: 'left center' }}
+      />
+      <div
+        className="sample-book-modal__turning-half-page sample-book-modal__turning-half-page--right"
+        style={{ ...pageStyle, backgroundPosition: 'right center' }}
+      />
+    </div>
+  )
+}
+
 export default function SampleBookModal({ isOpen, onClose }) {
   const [page, setPage] = useState(0)
+  const [turningPage, setTurningPage] = useState(null)
   const [isClosing, setIsClosing] = useState(false)
   const closeTimerRef = useRef(null)
+  const turnTimerRef = useRef(null)
   const closingRef = useRef(false)
+
+  const goToPage = useCallback(
+    (nextPage) => {
+      if (turningPage || nextPage < 0 || nextPage >= SAMPLE_PAGES.length || nextPage === page) return
+
+      setTurningPage({ page, direction: nextPage > page ? 'next' : 'prev' })
+      setPage(nextPage)
+      turnTimerRef.current = window.setTimeout(() => setTurningPage(null), 680)
+    },
+    [page, turningPage],
+  )
 
   const close = useCallback(() => {
     if (closingRef.current) return
@@ -37,8 +81,8 @@ export default function SampleBookModal({ isOpen, onClose }) {
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') close()
-      if (event.key === 'ArrowLeft') setPage((current) => Math.max(0, current - 1))
-      if (event.key === 'ArrowRight') setPage((current) => Math.min(SAMPLE_PAGES.length - 1, current + 1))
+      if (event.key === 'ArrowLeft') goToPage(page - 1)
+      if (event.key === 'ArrowRight') goToPage(page + 1)
     }
 
     document.body.style.overflow = 'hidden'
@@ -49,7 +93,9 @@ export default function SampleBookModal({ isOpen, onClose }) {
       document.removeEventListener('keydown', handleKeyDown)
       window.clearTimeout(closeTimerRef.current)
     }
-  }, [close, isOpen])
+  }, [close, goToPage, isOpen, page])
+
+  useEffect(() => () => window.clearTimeout(turnTimerRef.current), [])
 
   if (!isOpen) return null
 
@@ -77,13 +123,10 @@ export default function SampleBookModal({ isOpen, onClose }) {
         <div className="sample-book-modal__book" aria-live="polite">
           <img className="sample-book-modal__frame" src={bookFrame} alt="" aria-hidden="true" />
           <div className="sample-book-modal__paper" aria-hidden="true" />
-          {image ? (
-            <img src={image} alt={`${page + 1}페이지 동화`} />
-          ) : (
-            <div className="sample-book-modal__placeholder">
-              <span>{page + 1}페이지 이미지 준비 중</span>
-            </div>
-          )}
+          <PageLayer source={image} page={page} />
+          {turningPage ? (
+            <PageTurn source={SAMPLE_PAGES[turningPage.page]} direction={turningPage.direction} />
+          ) : null}
           <img className="sample-book-modal__divider" src={bookDivider} alt="" aria-hidden="true" />
         </div>
 
@@ -91,7 +134,7 @@ export default function SampleBookModal({ isOpen, onClose }) {
           <button
             type="button"
             className={`sample-book-modal__arrow sample-book-modal__arrow--prev${isFirstPage ? ' is-disabled' : ''}`}
-            onClick={() => setPage((current) => Math.max(0, current - 1))}
+            onClick={() => goToPage(page - 1)}
             disabled={isFirstPage}
             aria-label="이전 페이지"
           >
@@ -107,7 +150,7 @@ export default function SampleBookModal({ isOpen, onClose }) {
           <button
             type="button"
             className={`sample-book-modal__arrow sample-book-modal__arrow--next${isLastPage ? ' is-disabled' : ''}`}
-            onClick={() => setPage((current) => Math.min(SAMPLE_PAGES.length - 1, current + 1))}
+            onClick={() => goToPage(page + 1)}
             disabled={isLastPage}
             aria-label="다음 페이지"
           >
