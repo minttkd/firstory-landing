@@ -146,3 +146,22 @@
     aspect-ratio: 1;
   }
 }
+
+/* 모바일 글자 크기 (760px 이하) */
+@media (max-width: 760px) {
+  .sample__book-text p,
+  .sample__guide-text p {
+    font-size: 16px;
+  }
+
+  .sample__pill {
+    height: 36px;
+    padding: 0 18px;
+    font-size: 16px;
+    line-height: 32px;
+  }
+
+  .sample__guide-title {
+    font-size: 20px;
+  }
+}

@@ -45,3 +45,13 @@
     transform: none;
   }
 }
+
+/* 모바일: 버튼을 조금 작게 */
+@media (max-width: 760px) {
+  .btn {
+    gap: 12px;
+    height: 54px;
+    border-radius: 16px;
+    font-size: 16px;
+  }
+}

@@ -126,3 +126,22 @@
     width: min(100%, 382px);
   }
 }
+
+/* 모바일 글자 크기 (760px 이하) */
+@media (max-width: 760px) {
+  .steps__sub {
+    font-size: 15px;
+  }
+
+  .step-card__badge span {
+    font-size: 32px;
+  }
+
+  .step-card h3 {
+    font-size: 19px;
+  }
+
+  .step-card p {
+    font-size: 15px;
+  }
+}

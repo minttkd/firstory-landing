@@ -13,3 +13,9 @@
   color: var(--color-footer-text);
   white-space: pre-wrap;
 }
+
+@media (max-width: 760px) {
+  .footer p {
+    font-size: 12px;
+  }
+}

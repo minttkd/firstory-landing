@@ -77,7 +77,11 @@
   text-shadow: 0 0 2.8px rgba(0, 0, 0, 0.18);
 }
 
-.problem__list {
+.problem__mfit {
+  display: none;
+}
+
+.problem__glows {
   display: none;
 }
 
@@ -86,20 +90,38 @@
     display: none;
   }
 
-  .problem__list {
-    display: grid;
-    gap: 12px;
-    margin-top: 28px;
-    padding-bottom: 48px;
+  /* 글로우는 글/카드 뒤(z-index -1)에 깔리고, 블러가 섹션 밖으로 번져도 자연스럽게 이어져요 */
+  .problem__glows {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
   }
 
-  .problem__list li {
-    padding: 18px 22px;
-    border-radius: 19px;
-    background: #fff;
-    box-shadow: var(--shadow-card);
-    font-family: var(--font-hand);
-    font-size: 20px;
-    line-height: 1.34;
+  .problem__glow {
+    position: absolute;
+    max-width: none;
+  }
+
+  .problem__glow--a {
+    width: 560px;
+    left: -300px;
+    top: -150px;
+  }
+
+  .problem__glow--b {
+    width: 1000px;
+    left: 20%;
+    top: -60px;
+  }
+
+  /* 모바일: 같은 말풍선/캐릭터 구성을 세로로 쌓아서 보여줘요 (최대 560px, 가운데 정렬) */
+  .problem__mfit {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    margin: 8px auto 48px;
   }
 }

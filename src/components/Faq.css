@@ -113,3 +113,14 @@
     transition: none;
   }
 }
+
+/* 모바일 글자 크기 (760px 이하) */
+@media (max-width: 760px) {
+  .faq__question {
+    font-size: 16px;
+  }
+
+  .faq__panel p {
+    font-size: 14px;
+  }
+}

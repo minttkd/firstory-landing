@@ -124,6 +124,19 @@ button {
   letter-spacing: 0.4px;
 }
 
+/* 화면에는 보이지 않고 스크린 리더만 읽는 텍스트 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* 데코 이미지는 클릭/선택 대상이 아님 */
 .deco {
   position: absolute;
@@ -133,7 +146,7 @@ button {
 
 @media (max-width: 760px) {
   .section-title {
-    font-size: 30px;
+    font-size: 24px;
   }
 }
 
