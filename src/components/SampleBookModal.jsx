@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import pageOne from '../assets/images/sample-book/Group 4.png'
 import pageTwo from '../assets/images/sample-book/Group 5.png'
 import pageThree from '../assets/images/sample-book/Group 6.png'
@@ -18,13 +18,22 @@ const SAMPLE_PAGES = [pageOne, pageTwo, pageThree, pageFour, pageFive, pageSix, 
 
 export default function SampleBookModal({ isOpen, onClose }) {
   const [page, setPage] = useState(0)
+  const [isClosing, setIsClosing] = useState(false)
+  const closeTimerRef = useRef(null)
+  const closingRef = useRef(false)
 
   const close = useCallback(() => {
-    onClose()
+    if (closingRef.current) return
+
+    closingRef.current = true
+    setIsClosing(true)
+    closeTimerRef.current = window.setTimeout(onClose, 220)
   }, [onClose])
 
   useEffect(() => {
     if (!isOpen) return undefined
+
+    closingRef.current = false
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') close()
@@ -38,6 +47,7 @@ export default function SampleBookModal({ isOpen, onClose }) {
     return () => {
       document.body.style.overflow = ''
       document.removeEventListener('keydown', handleKeyDown)
+      window.clearTimeout(closeTimerRef.current)
     }
   }, [close, isOpen])
 
@@ -49,12 +59,12 @@ export default function SampleBookModal({ isOpen, onClose }) {
 
   return (
     <div
-      className="sample-book-modal-overlay"
+      className={`sample-book-modal-overlay${isClosing ? ' is-closing' : ''}`}
       role="presentation"
       onMouseDown={(event) => event.target === event.currentTarget && close()}
     >
       <section
-        className="sample-book-modal"
+        className={`sample-book-modal${isClosing ? ' is-closing' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="sample-book-modal-title"

@@ -11,6 +11,11 @@
   animation: sample-book-overlay-in 180ms ease-out both;
 }
 
+.sample-book-modal-overlay.is-closing {
+  pointer-events: none;
+  animation: sample-book-overlay-out 220ms ease-in both;
+}
+
 .sample-book-modal {
   position: relative;
   width: min(1200px, 100%);
@@ -20,6 +25,10 @@
   border-radius: 19px;
   background: #fff;
   animation: sample-book-modal-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sample-book-modal.is-closing {
+  animation: sample-book-modal-out 220ms ease-in both;
 }
 
 .sample-book-modal h2 {
@@ -224,7 +233,19 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes sample-book-overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes sample-book-modal-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(6px) scale(0.98); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sample-book-modal-overlay,
-  .sample-book-modal { animation: none; }
+  .sample-book-modal,
+  .sample-book-modal-overlay.is-closing,
+  .sample-book-modal.is-closing { animation: none; }
 }
