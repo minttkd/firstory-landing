@@ -38,6 +38,7 @@
 
 .hero__inner {
   position: relative;
+  z-index: 2; /* 글/버튼이 배경 그림과 위쪽 페이드보다 항상 위에 보이게 */
   padding-top: 9px;
 }
 
@@ -95,16 +96,18 @@
 
 @media (max-width: 900px) {
   .hero {
-    --hero-h: clamp(620px, 100vh, 760px);
-    --hero-h: clamp(620px, 100svh, 760px);
+    /* 모바일은 화면 높이(vh/svh/dvh)를 쓰지 않고 고정 높이로 둬요.
+       스크롤하면 주소창이 접히면서 화면 높이가 변하는데, 그때 첫 화면이 같이 늘어나 그림이 길어 보이는 걸 막아요. */
+    --hero-h: 740px;
   }
 
   /* 모바일: 글자 아래쪽 영역에 그림을 넣어요. 그림의 주인공(아이·책·곰 인형)이 있는 오른쪽을 보여줘요.
      스크롤할 때 그림 크기가 변하지 않도록 화면 높이(vh/svh)와 변형(transform/scale), mask를 쓰지 않고
      고정 px 크기 + 큰 박스를 오프셋해서 확대 효과를 내요. 위쪽 페이드는 배경색 그라데이션을 덮어서 만들어요. */
+  /* 그림은 버튼(hero 기준 약 422px) 아래에서 시작해요: 740 - 300 = 440 */
   .hero__bg-wrap {
     inset: auto 0 0;
-    height: 320px;
+    height: 300px;
   }
 
   .hero__bg-wrap::before {
