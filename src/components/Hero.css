@@ -99,22 +99,31 @@
     --hero-h: clamp(620px, 100svh, 760px);
   }
 
-  /* 모바일: 글자 아래쪽 영역에 그림을 넣어요. 그림의 주인공(아이·책·곰 인형)이 있는 오른쪽을 보여주고,
-     위쪽은 부드럽게 사라지게(mask) 해서 글자와 겹쳐도 읽히게 해요. */
+  /* 모바일: 글자 아래쪽 영역에 그림을 넣어요. 그림의 주인공(아이·책·곰 인형)이 있는 오른쪽을 보여줘요.
+     스크롤할 때 그림 크기가 변하지 않도록 화면 높이(vh/svh)와 변형(transform/scale), mask를 쓰지 않고
+     고정 px 크기 + 큰 박스를 오프셋해서 확대 효과를 내요. 위쪽 페이드는 배경색 그라데이션을 덮어서 만들어요. */
   .hero__bg-wrap {
     inset: auto 0 0;
-    height: max(260px, calc(var(--hero-h) - 420px));
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 30%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 30%);
+    height: 320px;
   }
 
+  .hero__bg-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -1px 0 auto; /* 1px 위로 확장해서 경계선이 비치지 않게 */
+    z-index: 1;
+    height: 38%;
+    background: linear-gradient(to bottom, var(--color-page) 0%, var(--color-page) 8%, rgba(252, 252, 249, 0) 100%);
+  }
+
+  /* 박스를 125%로 키우고 (82%, 70%) 기준점이 제자리에 오도록 왼쪽/위쪽으로 당겨요 (확대 1.25배와 같은 효과) */
   .hero__bg {
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    inset: auto;
+    top: -17.5%;
+    left: -20.5%;
+    width: 125%;
+    height: 125%;
     object-position: 82% 70%;
-    scale: 1.25;
-    transform-origin: 82% 70%;
   }
 
   .hero__badge {
