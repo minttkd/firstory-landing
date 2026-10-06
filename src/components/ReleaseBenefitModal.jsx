@@ -9,6 +9,7 @@ import closeIcon from '../assets/figma/release-benefit/deco-5.svg'
 import glowSmall from '../assets/figma/release-benefit/deco-6.svg'
 import glowFarRight from '../assets/figma/release-benefit/deco-4.svg'
 import { FEEDBACK_API_URL, SUBSCRIBE_API_URL } from '../config'
+import { PRICE, PRICE_RESPONSE, trackEvent, trackEventOnce } from '../analytics'
 import './ReleaseBenefitModal.css'
 
 // 백엔드가 허용하는 값과 정확히 같아야 해요 (다른 문구를 보내면 422)
@@ -29,6 +30,8 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const modalCloseTimerRef = useRef(null)
   const feedbackSentEmailRef = useRef('') // 피드백 전송에 성공한 이메일 (같은 이메일로 중복 전송 방지)
   const feedbackPendingRef = useRef(false) // 전송 중 (빠르게 두 번 눌러도 한 번만)
+  const emailSubmittedRef = useRef(false) // 이번 방문에서 이메일 제출에 성공했는지 (price_exit 판단용)
+  const exitLoggedRef = useRef(false) // 팝업을 한 번 열 때 price_exit은 한 번만
 
   const isSubmitting = submissionState === 'submitting'
 
@@ -61,6 +64,12 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
 
   const requestClose = useCallback(() => {
     if (isSubmitting) return
+
+    // 이메일을 제출하지 않은 채 닫으면 가격 화면 이탈로 기록해요 (닫기 버튼, 바깥 클릭, Esc 모두)
+    if (!emailSubmittedRef.current && !exitLoggedRef.current) {
+      exitLoggedRef.current = true
+      trackEvent('price_exit', { price: PRICE })
+    }
 
     if (feedbackCloseTimerRef.current) {
       window.clearTimeout(feedbackCloseTimerRef.current)
@@ -126,6 +135,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
 
   const handleFeedbackSelect = useCallback(
     (rating) => {
+      trackEvent('price_survey_submit', { price_response: PRICE_RESPONSE[rating] })
       sendFeedback(rating)
       closeFeedback(true)
     },
@@ -146,6 +156,13 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       window.clearTimeout(modalCloseTimerRef.current)
     }
   }, [])
+
+  // 가격이 보이는 신청 화면이 열릴 때: 방문당 한 번 price_view, 열 때마다 price_exit 기록 초기화
+  useEffect(() => {
+    if (!isOpen) return
+    exitLoggedRef.current = false
+    trackEventOnce('price_view', { price: PRICE })
+  }, [isOpen])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -211,6 +228,8 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       }
 
       if (response.ok) {
+        emailSubmittedRef.current = true
+        trackEvent('email_submit', { price: PRICE })
         setSubmissionState('success')
         setSubmissionMessage('사전등록이 완료되었습니다!')
         return

@@ -8,6 +8,8 @@ import circleSm from '../assets/icons/circle-bg-sm.svg'
 import arrowSample from '../assets/icons/arrow-right-hero.svg'
 import arrowGuide from '../assets/icons/arrow-right-guide.svg'
 import Button from './Button'
+import useSectionView from '../hooks/useSectionView'
+import { SAMPLE_ID, trackEvent } from '../analytics'
 import GuideModal from './GuideModal'
 import SampleBookModal from './SampleBookModal'
 import './Sample.css'
@@ -23,10 +25,22 @@ const CIRCLES = [
 export default function Sample() {
   const [isGuideOpen, setIsGuideOpen] = useState(false)
   const [isBookOpen, setIsBookOpen] = useState(false)
+  const sampleRef = useSectionView('sample_section_view')
+  const guideRef = useSectionView('guide_section_view')
+
+  const openBook = () => {
+    trackEvent('sample_book_click', { sample_id: SAMPLE_ID })
+    setIsBookOpen(true)
+  }
+
+  const openGuide = () => {
+    trackEvent('conversation_guide_click', { sample_id: SAMPLE_ID })
+    setIsGuideOpen(true)
+  }
 
   return (
     <>
-      <section className="sample" id="sample">
+      <section className="sample" id="sample" ref={sampleRef}>
       <img className="sample__arc" src={sectionArc} alt="" aria-hidden="true" />
       {CIRCLES.map((c) => (
         <img
@@ -51,18 +65,13 @@ export default function Sample() {
               <br />
               자신의 마음과 친구의 마음을 알아가는 이야기
             </p>
-            <Button
-              href={SAMPLE_BOOK_URL}
-              width={215}
-              arrow={arrowSample}
-              onClick={() => setIsBookOpen(true)}
-            >
+            <Button href={SAMPLE_BOOK_URL} width={215} arrow={arrowSample} onClick={openBook}>
               샘플 동화책 읽어보기
             </Button>
           </div>
         </div>
 
-        <div className="sample__guide">
+        <div className="sample__guide" ref={guideRef}>
           <div className="sample__guide-left">
             <span className="sample__pill">동화를 읽은 다음</span>
             <h3 className="sample__guide-title">동화 속 이야기로 아이와 대화를 이어가세요</h3>
@@ -79,16 +88,16 @@ export default function Sample() {
               <br />
               질문과 대화 가이드를 제공해요.
             </p>
-            <Button variant="mint" width={208} arrow={arrowGuide} onClick={() => setIsGuideOpen(true)}>
+            <Button variant="mint" width={208} arrow={arrowGuide} onClick={openGuide}>
               대화 가이드 더 보기
             </Button>
           </div>
         </div>
         </div>
       </section>
-      <GuideModal key={isGuideOpen ? 'open' : 'closed'} isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      <GuideModal key={isGuideOpen ? 'guide-open' : 'guide-closed'} isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
       <SampleBookModal
-        key={isBookOpen ? 'open' : 'closed'}
+        key={isBookOpen ? 'book-open' : 'book-closed'}
         isOpen={isBookOpen}
         onClose={() => setIsBookOpen(false)}
       />

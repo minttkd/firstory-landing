@@ -4,11 +4,14 @@ import toggleOpen from '../assets/icons/toggle-open.svg'
 import toggleClosed from '../assets/icons/toggle-closed.svg'
 import iconClose from '../assets/icons/icon-close.svg'
 import iconPlus from '../assets/icons/icon-plus.svg'
+import useSectionView from '../hooks/useSectionView'
+import { trackEvent } from '../analytics'
 import './Faq.css'
 
 // answer 배열의 각 항목은 줄바꿈(<br />)으로 구분돼요.
 const FAQS = [
   {
+    id: 'personalization',
     question: '우리 아이의 상황은 동화에 어떻게 반영되나요?',
     answer: [
       '부모가 알려준 아이의 경험과 감정, 성향과 관심사를 AI가 분석해요.',
@@ -16,10 +19,12 @@ const FAQS = [
     ],
   },
   {
+    id: 'child_data',
     question: '아이 정보는 어떻게 사용되고 보관되나요?',
     answer: ['입력한 정보는 맞춤 동화를 만드는 데 필요한 범위에서만 사용되며, 개인정보 처리 기준에 따라 안전하게 관리돼요.'],
   },
   {
+    id: 'conversation_guide',
     question: '동화를 활용한 아이와의 대화 가이드는 어떻게 제공되나요?',
     answer: [
       '완성된 동화와 함께 이야기의 주제와 대화 포인트를 한눈에 볼 수 있는 가이드를 제공해요.',
@@ -30,9 +35,10 @@ const FAQS = [
 
 export default function Faq() {
   const [openIndex, setOpenIndex] = useState(0)
+  const sectionRef = useSectionView('faq_section_view')
 
   return (
-    <section className="faq" id="faq">
+    <section className="faq" id="faq" ref={sectionRef}>
       <img className="faq__wave" src={faqWave} alt="" aria-hidden="true" />
 
       <div className="container faq__inner">
@@ -50,7 +56,10 @@ export default function Faq() {
                     aria-expanded={open}
                     aria-controls={`faq-panel-${i}`}
                     id={`faq-button-${i}`}
-                    onClick={() => setOpenIndex(open ? -1 : i)}
+                    onClick={() => {
+                      if (!open) trackEvent('faq_click', { faq_id: item.id })
+                      setOpenIndex(open ? -1 : i)
+                    }}
                   >
                     <span>{item.question}</span>
                     <span className="faq__toggle" aria-hidden="true">

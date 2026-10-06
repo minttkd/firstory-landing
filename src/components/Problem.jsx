@@ -1,4 +1,5 @@
 import useFitScale from '../hooks/useFitScale'
+import useSectionView from '../hooks/useSectionView'
 import glowLarge from '../assets/icons/glow-large.svg'
 import glowSmall from '../assets/icons/glow-small.svg'
 import thinking from '../assets/images/problem-thinking.webp'
@@ -188,9 +189,10 @@ export default function Problem() {
   const [desktopRef, desktopScale] = useFitScale(DESKTOP.width)
   const [mobileRef, mobileScale] = useFitScale(MOBILE.width)
   const d = DESKTOP.ORIGIN
+  const sectionRef = useSectionView('problem_section_view')
 
   return (
-    <section className="problem" id="problem">
+    <section className="problem" id="problem" ref={sectionRef}>
       {/* 모바일에서만 보이는 배경 글로우 (데스크톱은 스테이지 안에 있어요) */}
       <div className="problem__glows" aria-hidden="true">
         <img className="problem__glow problem__glow--a" src={glowSmall} alt="" />

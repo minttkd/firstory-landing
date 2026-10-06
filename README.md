@@ -39,13 +39,21 @@ src/
 │  ├─ FinalCta     마무리 CTA
 │  ├─ Footer
 │  └─ Button       공통 버튼 (primary / mint / gradient)
-├─ hooks/        useFitScale (고정 폭 장식 영역을 화면 폭에 맞춰 축소)
+├─ hooks/        useFitScale (고정 폭 장식 영역을 화면 폭에 맞춰 축소), useSectionView (섹션 노출 이벤트)
+├─ analytics.js  Google Analytics(GA4) 로드와 이벤트 전송 (trackEvent)
 ├─ styles/       global.css (색상·폰트 토큰, 공통 스타일)
 ├─ config.js     버튼 링크, 푸터 문의처
 └─ App.jsx       섹션 조립
 ```
 
 섹션마다 JSX와 CSS 파일이 분리되어 있어서, 서로 다른 섹션을 맡으면 충돌 없이 작업할 수 있어요.
+
+## 분석 (GA4)
+
+- 측정 ID는 `src/config.js`의 `GA_MEASUREMENT_ID`예요. 배포 빌드에서만 GA가 켜지고, `npm run dev`에서는 이벤트가 GA로 가지 않고 브라우저 콘솔에 `[GA] 이벤트명 {값}`으로만 찍혀요(확인용).
+- 이벤트는 `trackEvent('이름', { 파라미터 })`로 보내요. 섹션 노출은 `useSectionView` 훅이 방문당 한 번만 보내요.
+- 이벤트 이름·파라미터는 분석 명세(가설 검증용)와 같아야 해요. 이름이나 값을 바꾸기 전에 분석 담당과 먼저 상의해 주세요.
+- 화면 문구와 GA 값은 달라요. 예) 가격 의견 "비싸다" → `expensive` (`analytics.js`의 `PRICE_RESPONSE`).
 
 ## 디자인 / 폰트
 

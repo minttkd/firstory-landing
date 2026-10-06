@@ -6,6 +6,7 @@ import outlineA from '../assets/icons/outline-circle-a.svg'
 import outlineB from '../assets/icons/outline-circle-b.svg'
 import outlineC from '../assets/icons/outline-circle-c.svg'
 import outlineTriangle from '../assets/icons/outline-triangle.svg'
+import useSectionView from '../hooks/useSectionView'
 import './Steps.css'
 
 const STEPS = [
@@ -37,8 +38,10 @@ const DECOS = [
 ]
 
 export default function Steps() {
+  const sectionRef = useSectionView('process_section_view')
+
   return (
-    <section className="steps" id="steps">
+    <section className="steps" id="steps" ref={sectionRef}>
       <div className="steps__decos" aria-hidden="true">
         {DECOS.map((d) => (
           <div

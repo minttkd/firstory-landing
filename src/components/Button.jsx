@@ -21,7 +21,7 @@ export default function Button({ href, variant = 'primary', width, arrow, onClic
   }
 
   return (
-    <a href={href} className={className} style={style}>
+    <a href={href} className={className} style={style} onClick={onClick}>
       {content}
     </a>
   )
