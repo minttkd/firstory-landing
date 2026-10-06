@@ -8,6 +8,7 @@ import glowCenterSmall from '../assets/figma/release-benefit/deco-7.svg'
 import closeIcon from '../assets/figma/release-benefit/deco-5.svg'
 import glowSmall from '../assets/figma/release-benefit/deco-6.svg'
 import glowFarRight from '../assets/figma/release-benefit/deco-4.svg'
+import { SUBSCRIBE_API_URL } from '../config'
 import './ReleaseBenefitModal.css'
 
 export default function ReleaseBenefitModal({ isOpen, onClose }) {
@@ -16,11 +17,15 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
+  const [submissionState, setSubmissionState] = useState('idle')
+  const [submissionMessage, setSubmissionMessage] = useState('')
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
   const [isFeedbackClosing, setIsFeedbackClosing] = useState(false)
   const [isModalClosing, setIsModalClosing] = useState(false)
   const feedbackCloseTimerRef = useRef(null)
   const modalCloseTimerRef = useRef(null)
+
+  const isSubmitting = submissionState === 'submitting'
 
   useEffect(() => {
     const preloadModalAssets = () => {
@@ -50,13 +55,15 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   }, [])
 
   const requestClose = useCallback(() => {
+    if (isSubmitting) return
+
     if (feedbackCloseTimerRef.current) {
       window.clearTimeout(feedbackCloseTimerRef.current)
       feedbackCloseTimerRef.current = null
     }
     setIsFeedbackClosing(false)
     setIsFeedbackOpen(true)
-  }, [])
+  }, [isSubmitting])
 
   const closePopup = useCallback(() => {
     if (isModalClosing) return
@@ -84,6 +91,12 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   }, [closePopup, isFeedbackClosing])
 
   const handleFeedbackSelect = useCallback(() => closeFeedback(true), [closeFeedback])
+
+  const resetSubmissionState = () => {
+    if (submissionState === 'idle') return
+    setSubmissionState('idle')
+    setSubmissionMessage('')
+  }
 
   useEffect(() => () => {
     if (feedbackCloseTimerRef.current) {
@@ -125,16 +138,62 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
     : ''
   const consentError = hasAttemptedSubmit && !consent ? '개인정보 수집·이용에 동의해주세요.' : ''
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (isValidEmail && consent) {
-      setHasAttemptedSubmit(false)
-      closePopup()
+    if (isSubmitting) return
+
+    if (!isValidEmail || !consent) {
+      setHasAttemptedSubmit(true)
       return
     }
 
-    setHasAttemptedSubmit(true)
+    setHasAttemptedSubmit(false)
+    setSubmissionState('submitting')
+    setSubmissionMessage('사전등록 중입니다...')
+
+    try {
+      const response = await fetch(SUBSCRIBE_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+        }),
+      })
+
+      let data = null
+      try {
+        data = await response.json()
+      } catch {
+        data = null
+      }
+
+      if (response.ok) {
+        setSubmissionState('success')
+        setSubmissionMessage('사전등록이 완료되었습니다!')
+        return
+      }
+
+      if (response.status === 409) {
+        setSubmissionState('duplicate')
+        setSubmissionMessage(data?.detail || '이미 사전등록된 이메일입니다.')
+        return
+      }
+
+      if (response.status === 422) {
+        setSubmissionState('invalid')
+        setSubmissionMessage('올바른 이메일 주소를 입력해주세요.')
+        return
+      }
+
+      setSubmissionState('error')
+      setSubmissionMessage('사전등록에 실패했습니다. 잠시 후 다시 시도해주세요.')
+    } catch {
+      setSubmissionState('error')
+      setSubmissionMessage('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
+    }
   }
 
   const decoration = (className, src, alt = '') => (
@@ -197,7 +256,10 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
               id="release-benefit-email"
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value)
+                resetSubmissionState()
+              }}
               placeholder="example@gmail.com"
               autoComplete="email"
               aria-invalid={Boolean(emailError)}
@@ -213,7 +275,10 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
                 <input
                   type="checkbox"
                   checked={consent}
-                  onChange={(event) => setConsent(event.target.checked)}
+                  onChange={(event) => {
+                    setConsent(event.target.checked)
+                    resetSubmissionState()
+                  }}
                 />
                 <span className="release-benefit-modal__checkbox" aria-hidden="true" />
                 <span>[필수] 개인정보 수집·이용 동의</span>
@@ -228,9 +293,19 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
             <button
               type="submit"
               className="release-benefit-modal__submit"
+              disabled={isSubmitting || submissionState === 'success'}
             >
-              이 가격으로 예약할게요
+              {isSubmitting ? '사전등록 중...' : submissionState === 'success' ? '사전등록 완료' : '이 가격으로 예약할게요'}
             </button>
+            {submissionMessage && (
+              <p
+                className={`release-benefit-modal__status release-benefit-modal__status--${submissionState}`}
+                role={submissionState === 'error' || submissionState === 'duplicate' || submissionState === 'invalid' ? 'alert' : 'status'}
+                aria-live="polite"
+              >
+                {submissionMessage}
+              </p>
+            )}
           </form>
         </div>
       </section>
