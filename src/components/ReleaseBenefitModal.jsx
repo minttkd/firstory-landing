@@ -8,12 +8,22 @@ import glowCenterSmall from '../assets/figma/release-benefit/deco-7.svg'
 import closeIcon from '../assets/figma/release-benefit/deco-5.svg'
 import glowSmall from '../assets/figma/release-benefit/deco-6.svg'
 import glowFarRight from '../assets/figma/release-benefit/deco-4.svg'
-import { FEEDBACK_API_URL, SUBSCRIBE_API_URL } from '../config'
+import { CONTACT_EMAIL, FEEDBACK_API_URL, SUBSCRIBE_API_URL } from '../config'
 import { PRICE, PRICE_RESPONSE, trackEvent, trackEventOnce } from '../analytics'
 import './ReleaseBenefitModal.css'
 
 // 백엔드가 허용하는 값과 정확히 같아야 해요 (다른 문구를 보내면 422)
 const FEEDBACK_RATINGS = ['비싸다', '적당하다', '저렴하다', '기타']
+
+// "개인정보 수집·이용 동의" 보기 문구. 푸터처럼 [대괄호]로 적어 둔 문의처는 대괄호를 빼고 보여줘요.
+const PRIVACY_CONTACT = CONTACT_EMAIL.replace(/[[\]]/g, '')
+const PRIVACY_ITEMS = [
+  ['수집 항목', '이메일 주소 (가격 의견을 선택한 경우 그 응답도 함께 저장돼요)'],
+  ['수집·이용 목적', 'FIRSTORY 출시 안내와 할인 쿠폰 발송, 서비스 개선을 위한 가격 의견 분석'],
+  ['보유·이용 기간', '목적을 달성하거나 동의 철회를 요청할 때까지'],
+  ['동의 거부 권리', '동의를 거부할 수 있어요. 다만 거부하면 출시 안내와 할인 쿠폰을 받을 수 없어요.'],
+  ['문의 및 철회', PRIVACY_CONTACT],
+]
 
 export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const MODAL_CLOSE_DURATION = 320
@@ -24,6 +34,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const [submissionState, setSubmissionState] = useState('idle')
   const [submissionMessage, setSubmissionMessage] = useState('')
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
   const [isFeedbackClosing, setIsFeedbackClosing] = useState(false)
   const [isModalClosing, setIsModalClosing] = useState(false)
   const feedbackCloseTimerRef = useRef(null)
@@ -171,7 +182,8 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
 
     const handleKeyDown = (event) => {
       if (event.key !== 'Escape') return
-      if (isFeedbackOpen) closeFeedback()
+      if (isPrivacyOpen) setIsPrivacyOpen(false)
+      else if (isFeedbackOpen) closeFeedback()
       else requestClose()
     }
 
@@ -183,7 +195,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       document.body.style.overflow = previousOverflow
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [closeFeedback, isFeedbackOpen, isOpen, requestClose])
+  }, [closeFeedback, isFeedbackOpen, isOpen, isPrivacyOpen, requestClose])
 
   if (!isOpen) return null
 
@@ -344,7 +356,9 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
                 <span className="release-benefit-modal__checkbox" aria-hidden="true" />
                 <span>[필수] 개인정보 수집·이용 동의</span>
               </label>
-              <button type="button" className="release-benefit-modal__view">보기</button>
+              <button type="button" className="release-benefit-modal__view" onClick={() => setIsPrivacyOpen(true)}>
+                보기
+              </button>
             </div>
             {consentError && (
               <p className="release-benefit-modal__error release-benefit-modal__consent-error" role="alert">
@@ -370,6 +384,29 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
           </form>
         </div>
       </section>
+
+      {isPrivacyOpen && (
+        <div
+          className="release-privacy-overlay"
+          role="presentation"
+          onMouseDown={(event) => event.target === event.currentTarget && setIsPrivacyOpen(false)}
+        >
+          <section className="release-privacy-modal" role="dialog" aria-modal="true" aria-labelledby="release-privacy-title">
+            <h2 id="release-privacy-title">개인정보 수집 및 이용 동의</h2>
+            <dl className="release-privacy-modal__list">
+              {PRIVACY_ITEMS.map(([term, description]) => (
+                <div key={term}>
+                  <dt>{term}</dt>
+                  <dd>{description}</dd>
+                </div>
+              ))}
+            </dl>
+            <button type="button" className="release-privacy-modal__confirm" onClick={() => setIsPrivacyOpen(false)} autoFocus>
+              확인
+            </button>
+          </section>
+        </div>
+      )}
 
       {isFeedbackOpen && (
         <div
