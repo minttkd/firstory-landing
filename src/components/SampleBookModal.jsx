@@ -12,6 +12,7 @@ import arrowDisabled from '../assets/figma/sample-book/arrow-disabled.svg'
 import bookDivider from '../assets/figma/sample-book/book-divider.svg'
 import bookFrame from '../assets/figma/sample-book/book-frame.svg'
 import iconClose from '../assets/figma/sample-book/close.svg'
+import { SAMPLE_ID, trackEvent, trackEventOnce } from '../analytics'
 import './SampleBookModal.css'
 
 const SAMPLE_PAGES = [pageOne, pageTwo, pageThree, pageFour, pageFive, pageSix, pageSeven, pageEight]
@@ -99,6 +100,13 @@ export default function SampleBookModal({ isOpen, onClose }) {
   }, [close, goToPage, isOpen, page])
 
   useEffect(() => () => window.clearTimeout(turnTimerRef.current), [])
+
+  // 동화책을 열거나 페이지를 넘길 때마다 열람 기록, 마지막 페이지에 처음 닿으면 완독 기록
+  useEffect(() => {
+    if (!isOpen) return
+    trackEvent('sample_page_view', { sample_id: SAMPLE_ID, page_number: page + 1 })
+    if (page === SAMPLE_PAGES.length - 1) trackEventOnce('sample_complete', { sample_id: SAMPLE_ID })
+  }, [isOpen, page])
 
   useEffect(() => {
     if (!isOpen) return undefined
