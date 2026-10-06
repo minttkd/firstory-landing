@@ -95,33 +95,35 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
     }, FEEDBACK_CLOSE_DURATION)
   }, [closePopup, isFeedbackClosing])
 
-  // 사전등록을 마친(또는 이미 등록된) 이메일일 때만 가격 의견을 백엔드로 보내요.
+  // 가격 의견은 사전등록 여부와 관계없이 백엔드로 보내요.
   // 팝업은 바로 닫고 전송은 뒤에서 처리해요(keepalive로 창이 닫혀도 요청이 끝까지 가요). 실패하면 다음 선택 때 다시 시도해요.
   const sendFeedback = useCallback(
     (rating) => {
-      const registeredEmail = email.trim()
-      const isRegistered = submissionState === 'success' || submissionState === 'duplicate'
+      const feedbackEmail = email.trim()
 
-      if (!isRegistered || !registeredEmail) return
-      if (feedbackSentEmailRef.current === registeredEmail || feedbackPendingRef.current) return
+      if (feedbackEmail && feedbackSentEmailRef.current === feedbackEmail) return
+      if (feedbackPendingRef.current) return
 
       feedbackPendingRef.current = true
       fetch(FEEDBACK_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: registeredEmail, rating }),
+        body: JSON.stringify({ email: feedbackEmail, rating }),
         keepalive: true,
       })
         .then((response) => {
-          if (response.ok) feedbackSentEmailRef.current = registeredEmail
-          else console.warn(`가격 피드백 전송 실패 (${response.status})`)
+          if (!response.ok) {
+            console.warn(`가격 피드백 전송 실패 (${response.status})`)
+            return
+          }
+          if (feedbackEmail) feedbackSentEmailRef.current = feedbackEmail
         })
         .catch(() => console.warn('가격 피드백 전송 중 네트워크 오류'))
         .finally(() => {
           feedbackPendingRef.current = false
         })
     },
-    [email, submissionState],
+    [email],
   )
 
   const handleFeedbackSelect = useCallback(
