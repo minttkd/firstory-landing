@@ -8,5 +8,8 @@ export const SUBSCRIBE_API_URL = 'https://backendlandingpage-production-103a.up.
 // 가격 피드백: { email, rating } 전송. rating은 '비싸다' | '적당하다' | '저렴하다' | '기타' 만 허용 (그 외는 422)
 export const FEEDBACK_API_URL = 'https://backendlandingpage-production-103a.up.railway.app/api/feedback'
 
+// Google Analytics(GA4) 측정 ID. null이면 GA를 로드하지 않아요.
+export const GA_MEASUREMENT_ID = 'G-Q7YT2RGFJM'
+
 // 푸터 문구 (디자인에 [팀 이메일] 자리표시자로 되어 있음)
 export const CONTACT_EMAIL = '[팀 이메일]'
