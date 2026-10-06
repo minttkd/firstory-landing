@@ -17,6 +17,30 @@ import './SampleBookModal.css'
 
 const SAMPLE_PAGES = [pageOne, pageTwo, pageThree, pageFour, pageFive, pageSix, pageSeven, pageEight]
 
+function preloadImage(source) {
+  return new Promise((resolve) => {
+    const image = new Image()
+    let settled = false
+
+    const finish = () => {
+      if (settled) return
+      settled = true
+
+      // 네트워크 수신뿐 아니라 디코딩까지 끝낸 뒤 다음 단계를 시작한다.
+      const decode = typeof image.decode === 'function' ? image.decode() : Promise.resolve()
+      decode.catch(() => {}).then(() => resolve(source))
+    }
+
+    image.decoding = 'async'
+    image.onload = finish
+    image.onerror = finish
+    image.src = source
+
+    // 캐시에 이미 있는 이미지는 load 이벤트보다 먼저 complete일 수 있다.
+    if (image.complete) finish()
+  })
+}
+
 function PageLayer({ source, page, className = '', ariaHidden = false }) {
   return (
     <div className={`sample-book-modal__page-layer${className ? ` ${className}` : ''}`} aria-hidden={ariaHidden}>
@@ -54,6 +78,8 @@ export default function SampleBookModal({ isOpen, onClose }) {
   const [isClosing, setIsClosing] = useState(false)
   const [bookScale, setBookScale] = useState(1)
   const [mobileModalHeight, setMobileModalHeight] = useState(null)
+  const [isFirstPageReady, setIsFirstPageReady] = useState(false)
+  const [arePagesReady, setArePagesReady] = useState(false)
   const closeTimerRef = useRef(null)
   const turnTimerRef = useRef(null)
   const bookRef = useRef(null)
@@ -61,13 +87,13 @@ export default function SampleBookModal({ isOpen, onClose }) {
 
   const goToPage = useCallback(
     (nextPage) => {
-      if (turningPage || nextPage < 0 || nextPage >= SAMPLE_PAGES.length || nextPage === page) return
+      if (!arePagesReady || turningPage || nextPage < 0 || nextPage >= SAMPLE_PAGES.length || nextPage === page) return
 
       setTurningPage({ page, direction: nextPage > page ? 'next' : 'prev' })
       setPage(nextPage)
       turnTimerRef.current = window.setTimeout(() => setTurningPage(null), 680)
     },
-    [page, turningPage],
+    [arePagesReady, page, turningPage],
   )
 
   const close = useCallback(() => {
@@ -77,6 +103,29 @@ export default function SampleBookModal({ isOpen, onClose }) {
     setIsClosing(true)
     closeTimerRef.current = window.setTimeout(onClose, 220)
   }, [onClose])
+
+  useEffect(() => {
+    if (!isOpen) return undefined
+
+    let cancelled = false
+
+    const loadPages = async () => {
+      // 첫 페이지는 먼저 받아서 바로 보여준다.
+      await preloadImage(SAMPLE_PAGES[0])
+      if (cancelled) return
+      setIsFirstPageReady(true)
+
+      // 나머지 페이지는 동시에 비동기로 준비하고, 모두 끝난 뒤에만 페이지 이동을 연다.
+      await Promise.allSettled(SAMPLE_PAGES.slice(1).map((source) => preloadImage(source)))
+      if (!cancelled) setArePagesReady(true)
+    }
+
+    loadPages()
+
+    return () => {
+      cancelled = true
+    }
+  }, [isOpen])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -168,6 +217,8 @@ export default function SampleBookModal({ isOpen, onClose }) {
   const image = SAMPLE_PAGES[page]
   const isFirstPage = page === 0
   const isLastPage = page === SAMPLE_PAGES.length - 1
+  const canRenderPage = isFirstPageReady && (arePagesReady || page === 0)
+  const isBookLoading = !isFirstPageReady || !arePagesReady
 
   return (
     <div
@@ -195,11 +246,16 @@ export default function SampleBookModal({ isOpen, onClose }) {
         >
           <img className="sample-book-modal__frame" src={bookFrame} alt="" aria-hidden="true" />
           <div className="sample-book-modal__paper" aria-hidden="true" />
-          <PageLayer source={image} page={page} />
+          <PageLayer source={canRenderPage ? image : null} page={page} />
           {turningPage ? (
             <PageTurn source={SAMPLE_PAGES[turningPage.page]} direction={turningPage.direction} />
           ) : null}
           <img className="sample-book-modal__divider" src={bookDivider} alt="" aria-hidden="true" />
+          {isBookLoading ? (
+            <p className="sample-book-modal__loading" role="status" aria-live="polite">
+              {!isFirstPageReady ? '첫 페이지를 불러오는 중이에요' : '동화책을 준비하고 있어요'}
+            </p>
+          ) : null}
         </div>
 
         <div className="sample-book-modal__pagination" aria-label="동화책 페이지 이동">
@@ -221,12 +277,12 @@ export default function SampleBookModal({ isOpen, onClose }) {
 
           <button
             type="button"
-            className={`sample-book-modal__arrow sample-book-modal__arrow--next${isLastPage ? ' is-disabled' : ''}`}
+            className={`sample-book-modal__arrow sample-book-modal__arrow--next${isLastPage || !arePagesReady ? ' is-disabled' : ''}`}
             onClick={() => goToPage(page + 1)}
-            disabled={isLastPage}
+            disabled={isLastPage || !arePagesReady}
             aria-label="다음 페이지"
           >
-            <img src={isLastPage ? arrowDisabled : arrowActive} alt="" width="19.527" height="29.161" />
+            <img src={isLastPage || !arePagesReady ? arrowDisabled : arrowActive} alt="" width="19.527" height="29.161" />
           </button>
         </div>
       </section>
