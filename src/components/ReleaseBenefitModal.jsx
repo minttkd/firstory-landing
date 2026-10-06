@@ -8,8 +8,11 @@ import glowCenterSmall from '../assets/figma/release-benefit/deco-7.svg'
 import closeIcon from '../assets/figma/release-benefit/deco-5.svg'
 import glowSmall from '../assets/figma/release-benefit/deco-6.svg'
 import glowFarRight from '../assets/figma/release-benefit/deco-4.svg'
-import { SUBSCRIBE_API_URL } from '../config'
+import { FEEDBACK_API_URL, SUBSCRIBE_API_URL } from '../config'
 import './ReleaseBenefitModal.css'
+
+// 백엔드가 허용하는 값과 정확히 같아야 해요 (다른 문구를 보내면 422)
+const FEEDBACK_RATINGS = ['비싸다', '적당하다', '저렴하다', '기타']
 
 export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const MODAL_CLOSE_DURATION = 320
@@ -24,6 +27,8 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
   const [isModalClosing, setIsModalClosing] = useState(false)
   const feedbackCloseTimerRef = useRef(null)
   const modalCloseTimerRef = useRef(null)
+  const feedbackSentEmailRef = useRef('') // 피드백 전송에 성공한 이메일 (같은 이메일로 중복 전송 방지)
+  const feedbackPendingRef = useRef(false) // 전송 중 (빠르게 두 번 눌러도 한 번만)
 
   const isSubmitting = submissionState === 'submitting'
 
@@ -90,7 +95,42 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
     }, FEEDBACK_CLOSE_DURATION)
   }, [closePopup, isFeedbackClosing])
 
-  const handleFeedbackSelect = useCallback(() => closeFeedback(true), [closeFeedback])
+  // 사전등록을 마친(또는 이미 등록된) 이메일일 때만 가격 의견을 백엔드로 보내요.
+  // 팝업은 바로 닫고 전송은 뒤에서 처리해요(keepalive로 창이 닫혀도 요청이 끝까지 가요). 실패하면 다음 선택 때 다시 시도해요.
+  const sendFeedback = useCallback(
+    (rating) => {
+      const registeredEmail = email.trim()
+      const isRegistered = submissionState === 'success' || submissionState === 'duplicate'
+
+      if (!isRegistered || !registeredEmail) return
+      if (feedbackSentEmailRef.current === registeredEmail || feedbackPendingRef.current) return
+
+      feedbackPendingRef.current = true
+      fetch(FEEDBACK_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: registeredEmail, rating }),
+        keepalive: true,
+      })
+        .then((response) => {
+          if (response.ok) feedbackSentEmailRef.current = registeredEmail
+          else console.warn(`가격 피드백 전송 실패 (${response.status})`)
+        })
+        .catch(() => console.warn('가격 피드백 전송 중 네트워크 오류'))
+        .finally(() => {
+          feedbackPendingRef.current = false
+        })
+    },
+    [email, submissionState],
+  )
+
+  const handleFeedbackSelect = useCallback(
+    (rating) => {
+      sendFeedback(rating)
+      closeFeedback(true)
+    },
+    [closeFeedback, sendFeedback],
+  )
 
   const resetSubmissionState = () => {
     if (submissionState === 'idle') return
@@ -324,8 +364,8 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
             <h2 id="release-feedback-title">가격이 어떻게 느껴지셨나요?</h2>
             <p>더 좋은 서비스를 위해 의견을 들려주세요</p>
             <div className="release-feedback-modal__options">
-              {['비싸다', '적당하다', '저렴하다', '기타'].map((option) => (
-                <button type="button" key={option} onClick={handleFeedbackSelect}>
+              {FEEDBACK_RATINGS.map((option) => (
+                <button type="button" key={option} onClick={() => handleFeedbackSelect(option)}>
                   {option}
                 </button>
               ))}
