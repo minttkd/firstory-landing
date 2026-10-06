@@ -218,6 +218,34 @@
   filter: brightness(1.04);
 }
 
+.release-benefit-modal__submit:disabled {
+  cursor: wait;
+  filter: none;
+  opacity: 0.62;
+}
+
+.release-benefit-modal__status {
+  width: 291px;
+  margin: 12px 0 0 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.release-benefit-modal__status--success {
+  color: #2f8f62;
+}
+
+.release-benefit-modal__status--submitting {
+  color: #898989;
+}
+
+.release-benefit-modal__status--duplicate,
+.release-benefit-modal__status--invalid,
+.release-benefit-modal__status--error {
+  color: #d96c4a;
+}
+
 .release-benefit-modal__error {
   margin-top: 8px;
   color: #d96c4a;
@@ -604,12 +632,17 @@
 
   .release-benefit-modal__form input[type='email'],
   .release-benefit-modal__consent-row,
-  .release-benefit-modal__submit {
+  .release-benefit-modal__submit,
+  .release-benefit-modal__status {
     width: 100%;
     max-width: 420px;
   }
 
   .release-benefit-modal__submit {
+    margin-left: 0;
+  }
+
+  .release-benefit-modal__status {
     margin-left: 0;
   }
 }
