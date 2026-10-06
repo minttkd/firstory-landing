@@ -1,4 +1,4 @@
-import { GA_MEASUREMENT_ID } from './config'
+import { GA_MEASUREMENT_ID, META_PIXEL_ID } from './config'
 
 // Google Analytics(GA4) 로드. 배포(빌드)된 사이트에서만 동작하고,
 // 로컬 개발 중(npm run dev)에는 로드하지 않아 방문 데이터가 섞이지 않아요.
@@ -16,6 +16,30 @@ export function initAnalytics() {
   }
   window.gtag('js', new Date())
   window.gtag('config', GA_MEASUREMENT_ID)
+}
+
+// Meta 픽셀 로드 (Meta가 안내한 설치 코드와 같은 동작). 배포(빌드)된 사이트에서만 동작해요.
+export function initMetaPixel() {
+  if (!META_PIXEL_ID || !import.meta.env.PROD || window.fbq) return
+
+  const fbq = function fbq() {
+    if (fbq.callMethod) fbq.callMethod.apply(fbq, arguments)
+    else fbq.queue.push(arguments)
+  }
+  window.fbq = fbq
+  window._fbq = fbq
+  fbq.push = fbq
+  fbq.loaded = true
+  fbq.version = '2.0'
+  fbq.queue = []
+
+  const script = document.createElement('script')
+  script.async = true
+  script.src = 'https://connect.facebook.net/en_US/fbevents.js'
+  document.head.appendChild(script)
+
+  fbq('init', META_PIXEL_ID)
+  fbq('track', 'PageView')
 }
 
 // 이벤트 전송. GA가 꺼져 있으면(개발 중 등) 아무것도 보내지 않고, 개발 중에는 콘솔에만 찍어서 확인할 수 있어요.
