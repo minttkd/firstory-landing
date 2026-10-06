@@ -9,4 +9,4 @@ export const SUBSCRIBE_API_URL = 'https://backendlandingpage-production-103a.up.
 export const FEEDBACK_API_URL = 'https://backendlandingpage-production-103a.up.railway.app/api/feedback'
 
 // 푸터 문구 (디자인에 [팀 이메일] 자리표시자로 되어 있음)
-export const CONTACT_EMAIL = '[팀 이메일]'
+export const CONTACT_EMAIL = '[firstory.official@gmail.com]'
