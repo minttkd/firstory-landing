@@ -11,5 +11,8 @@ export const FEEDBACK_API_URL = 'https://backendlandingpage-production-103a.up.r
 // Google Analytics(GA4) 측정 ID. null이면 GA를 로드하지 않아요.
 export const GA_MEASUREMENT_ID = 'G-Q7YT2RGFJM'
 
+// Meta(페이스북/인스타그램) 픽셀 ID. null이면 픽셀을 로드하지 않아요.
+export const META_PIXEL_ID = '1418800066985573'
+
 // 푸터 문구 (디자인에 [팀 이메일] 자리표시자로 되어 있음)
 export const CONTACT_EMAIL = '[firstory.official@gmail.com]'
