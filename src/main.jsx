@@ -2,10 +2,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/global.css'
 import App from './App.jsx'
-import { initAnalytics, initMetaPixel } from './analytics'
+import { initAnalytics, initMetaPixel, initMixpanel } from './analytics'
 
 initAnalytics()
 initMetaPixel()
+initMixpanel()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
