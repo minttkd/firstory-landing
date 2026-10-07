@@ -244,6 +244,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       if (response.ok) {
         emailSubmittedRef.current = true
         trackEvent('email_submit', { price: PRICE })
+        if (typeof window.fbq === 'function') window.fbq('track', 'Lead')
         setSubmissionState('success')
         setSubmissionMessage('사전등록이 완료되었습니다!')
         return
