@@ -14,5 +14,8 @@ export const GA_MEASUREMENT_ID = 'G-Q7YT2RGFJM'
 // Meta(페이스북/인스타그램) 픽셀 ID. null이면 픽셀을 로드하지 않아요.
 export const META_PIXEL_ID = '1418800066985573'
 
+// Mixpanel 프로젝트 토큰. 배포 환경의 VITE_MIXPANEL_TOKEN 값이 없으면 Mixpanel을 로드하지 않아요.
+export const MIXPANEL_TOKEN = import.meta.env.VITE_MIXPANEL_TOKEN?.trim() || null
+
 // 푸터 문구 (디자인에 [팀 이메일] 자리표시자로 되어 있음)
 export const CONTACT_EMAIL = '[firstory.official@gmail.com]'

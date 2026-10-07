@@ -1,4 +1,7 @@
-import { GA_MEASUREMENT_ID, META_PIXEL_ID } from './config'
+import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
+import { GA_MEASUREMENT_ID, META_PIXEL_ID, MIXPANEL_TOKEN } from './config'
+
+let mixpanelInitialized = false
 
 // Google Analytics(GA4) 로드. 배포(빌드)된 사이트에서만 동작하고,
 // 로컬 개발 중(npm run dev)에는 로드하지 않아 방문 데이터가 섞이지 않아요.
@@ -42,10 +45,23 @@ export function initMetaPixel() {
   fbq('track', 'PageView')
 }
 
-// 이벤트 전송. GA가 꺼져 있으면(개발 중 등) 아무것도 보내지 않고, 개발 중에는 콘솔에만 찍어서 확인할 수 있어요.
+// Mixpanel 로드. 토큰이 등록된 배포 사이트에서만 동작해요.
+// 자동 클릭 수집과 세션 리플레이는 사용하지 않고, 페이지뷰와 명시적으로 정의한 이벤트만 전송해요.
+export function initMixpanel() {
+  if (!MIXPANEL_TOKEN || !import.meta.env.PROD || mixpanelInitialized) return
+
+  mixpanel.init(MIXPANEL_TOKEN, {
+    autocapture: false,
+    track_pageview: true,
+  })
+  mixpanelInitialized = true
+}
+
+// 이벤트 전송. 분석 도구가 꺼져 있으면 아무것도 보내지 않고, 개발 중에는 콘솔에만 찍어서 확인할 수 있어요.
 export function trackEvent(name, params) {
-  if (import.meta.env.DEV) console.debug('[GA]', name, params ?? '')
+  if (import.meta.env.DEV) console.debug('[Analytics]', name, params ?? '')
   if (typeof window.gtag === 'function') window.gtag('event', name, params)
+  if (mixpanelInitialized) mixpanel.track(name, params)
 }
 
 // 같은 방문(페이지를 연 뒤 새로고침 전까지) 안에서는 이름당 한 번만 보내요. 섹션 노출·완독 같은 "최초" 이벤트용.
