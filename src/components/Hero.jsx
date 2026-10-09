@@ -2,12 +2,14 @@ import heroBg from '../assets/images/hero-bg.webp'
 import chevronDown from '../assets/icons/chevron-down.svg'
 import arrowRight from '../assets/icons/arrow-right-hero.svg'
 import Button from './Button'
-import { setBenefitEntryMethod, trackEvent } from '../analytics'
+import useSectionView from '../hooks/useSectionView'
+import { setBenefitEntryMethod, trackEvent, trackMixpanel } from '../analytics'
 import './Hero.css'
 
 // 출시 혜택 영역으로 바로 이동해요. 중간 섹션을 스치며 "노출"로 잡히지 않도록 부드러운 스크롤 없이 한 번에 이동해요.
 function handleCtaClick(event) {
   trackEvent('hero_cta_click', { destination: 'benefit' })
+  trackMixpanel('cta_clicked', { cta_position: 'hero' })
   setBenefitEntryMethod('hero_cta')
 
   const target = document.getElementById('cta')
@@ -18,8 +20,10 @@ function handleCtaClick(event) {
 }
 
 export default function Hero() {
+  const sectionRef = useSectionView(null, null, 'hero')
+
   return (
-    <section className="hero" id="top">
+    <section className="hero" id="top" ref={sectionRef}>
       <div className="hero__bg-wrap" aria-hidden="true">
         <img className="hero__bg" src={heroBg} alt="" />
       </div>

@@ -50,11 +50,16 @@ src/
 
 ## 분석 (GA4 / Meta Pixel / Mixpanel)
 
-- 측정 ID는 `src/config.js`의 `GA_MEASUREMENT_ID`예요. 배포 빌드에서만 GA가 켜지고, `npm run dev`에서는 이벤트가 분석 도구로 가지 않고 브라우저 콘솔에 `[Analytics] 이벤트명 {값}`으로만 찍혀요(확인용).
+- 측정 ID는 `src/config.js`의 `GA_MEASUREMENT_ID`예요. 배포 빌드에서만 GA가 켜지고, `npm run dev`에서는 이벤트가 분석 도구로 가지 않고 브라우저 콘솔에 `[GA] 이벤트명 {값}`(GA4), `[MP] 이벤트명 {값}`(Mixpanel)으로만 찍혀요(확인용).
 - 이벤트는 `trackEvent('이름', { 파라미터 })`로 보내요. 섹션 노출은 `useSectionView` 훅이 방문당 한 번만 보내요.
 - 이벤트 이름·파라미터는 분석 명세(가설 검증용)와 같아야 해요. 이름이나 값을 바꾸기 전에 분석 담당과 먼저 상의해 주세요.
 - 화면 문구와 GA 값은 달라요. 예) 가격 의견 "비싸다" → `expensive` (`analytics.js`의 `PRICE_RESPONSE`).
-- Mixpanel은 배포 환경변수 `VITE_MIXPANEL_TOKEN`에 Project Token이 있을 때만 켜져요. 기존 `trackEvent` 이벤트가 GA4와 Mixpanel에 함께 전송되고, 페이지뷰는 자동으로 수집해요. 자동 클릭 수집과 세션 리플레이는 꺼져 있어요.
+- Mixpanel은 배포 환경변수 `VITE_MIXPANEL_TOKEN`에 Project Token이 있을 때만 켜져요(토큰은 배포 서비스의 환경변수에 넣고, 바꾸면 다시 배포해야 반영돼요). 자동 수집(클릭·페이지뷰·마케팅 파라미터)과 세션 리플레이는 꺼 두고, 분석 명세의 7개 이벤트만 `trackMixpanel('이름', { 속성 })`으로 보내요. GA4 이벤트(`trackEvent`)는 Mixpanel로 가지 않아요.
+  - 이벤트: `landing_viewed`, `section_viewed`(`section_name`: hero/process/sample/faq/bottom_cta), `sample_opened`·`sample_closed`(`sample_type`: story/guide), `faq_opened`(`faq_id`: faq_01…), `cta_clicked`(`cta_position`: hero), `email_submitted`
+  - 모든 이벤트의 공통 속성: `session_id`, `page_path`, `utm_source`·`utm_medium`·`utm_campaign`·`utm_content`, `device_type`. UTM은 페이지를 연 주소에서만 읽고(저장하지 않음) 없으면 `none`이에요.
+  - `section_viewed`는 섹션이 50% 이상(화면보다 긴 섹션은 화면 높이의 50% 이상) 1초 이상 보일 때 페이지뷰당 한 번만 보내요.
+  - 이메일 등 개인정보는 속성으로 보내지 않아요.
+  - 로컬에서 실제 전송까지 확인하려면 `.env.example`을 `.env.local`로 복사해 토큰을 넣고 `npm run build && npm run preview`로 확인해요.
 
 ## 디자인 / 폰트
 

@@ -38,7 +38,7 @@ const DECOS = [
 ]
 
 export default function Steps() {
-  const sectionRef = useSectionView('process_section_view')
+  const sectionRef = useSectionView('process_section_view', undefined, 'process')
 
   return (
     <section className="steps" id="steps" ref={sectionRef}>

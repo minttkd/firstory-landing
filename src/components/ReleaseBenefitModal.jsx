@@ -9,7 +9,7 @@ import closeIcon from '../assets/figma/release-benefit/deco-5.svg'
 import glowSmall from '../assets/figma/release-benefit/deco-6.svg'
 import glowFarRight from '../assets/figma/release-benefit/deco-4.svg'
 import { CONTACT_EMAIL, FEEDBACK_API_URL, SUBSCRIBE_API_URL } from '../config'
-import { PRICE, PRICE_RESPONSE, trackEvent, trackEventOnce } from '../analytics'
+import { PRICE, PRICE_RESPONSE, trackEvent, trackEventOnce, trackMixpanel } from '../analytics'
 import './ReleaseBenefitModal.css'
 
 // 백엔드가 허용하는 값과 정확히 같아야 해요 (다른 문구를 보내면 422)
@@ -244,6 +244,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
       if (response.ok) {
         emailSubmittedRef.current = true
         trackEvent('email_submit', { price: PRICE })
+        trackMixpanel('email_submitted')
         if (typeof window.fbq === 'function') window.fbq('track', 'Lead')
         setSubmissionState('success')
         setSubmissionMessage('사전등록이 완료되었습니다!')

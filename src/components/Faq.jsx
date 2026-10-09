@@ -5,7 +5,7 @@ import toggleClosed from '../assets/icons/toggle-closed.svg'
 import iconClose from '../assets/icons/icon-close.svg'
 import iconPlus from '../assets/icons/icon-plus.svg'
 import useSectionView from '../hooks/useSectionView'
-import { trackEvent } from '../analytics'
+import { trackEvent, trackMixpanel } from '../analytics'
 import './Faq.css'
 
 // answer 배열의 각 항목은 줄바꿈(<br />)으로 구분돼요.
@@ -35,7 +35,7 @@ const FAQS = [
 
 export default function Faq() {
   const [openIndex, setOpenIndex] = useState(0)
-  const sectionRef = useSectionView('faq_section_view')
+  const sectionRef = useSectionView('faq_section_view', undefined, 'faq')
 
   return (
     <section className="faq" id="faq" ref={sectionRef}>
@@ -57,7 +57,10 @@ export default function Faq() {
                     aria-controls={`faq-panel-${i}`}
                     id={`faq-button-${i}`}
                     onClick={() => {
-                      if (!open) trackEvent('faq_click', { faq_id: item.id })
+                      if (!open) {
+                        trackEvent('faq_click', { faq_id: item.id })
+                        trackMixpanel('faq_opened', { faq_id: `faq_${String(i + 1).padStart(2, '0')}` })
+                      }
                       setOpenIndex(open ? -1 : i)
                     }}
                   >
