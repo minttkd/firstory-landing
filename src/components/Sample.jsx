@@ -9,7 +9,7 @@ import arrowSample from '../assets/icons/arrow-right-hero.svg'
 import arrowGuide from '../assets/icons/arrow-right-guide.svg'
 import Button from './Button'
 import useSectionView from '../hooks/useSectionView'
-import { SAMPLE_ID, trackEvent } from '../analytics'
+import { SAMPLE_ID, trackEvent, trackMixpanel } from '../analytics'
 import GuideModal from './GuideModal'
 import SampleBookModal from './SampleBookModal'
 import './Sample.css'
@@ -25,17 +25,29 @@ const CIRCLES = [
 export default function Sample() {
   const [isGuideOpen, setIsGuideOpen] = useState(false)
   const [isBookOpen, setIsBookOpen] = useState(false)
-  const sampleRef = useSectionView('sample_section_view')
+  const sampleRef = useSectionView('sample_section_view', undefined, 'sample')
   const guideRef = useSectionView('guide_section_view')
 
   const openBook = () => {
     trackEvent('sample_book_click', { sample_id: SAMPLE_ID })
+    trackMixpanel('sample_opened', { sample_type: 'story' })
     setIsBookOpen(true)
+  }
+
+  const closeBook = () => {
+    trackMixpanel('sample_closed', { sample_type: 'story' })
+    setIsBookOpen(false)
   }
 
   const openGuide = () => {
     trackEvent('conversation_guide_click', { sample_id: SAMPLE_ID })
+    trackMixpanel('sample_opened', { sample_type: 'guide' })
     setIsGuideOpen(true)
+  }
+
+  const closeGuide = () => {
+    trackMixpanel('sample_closed', { sample_type: 'guide' })
+    setIsGuideOpen(false)
   }
 
   return (
@@ -95,11 +107,11 @@ export default function Sample() {
         </div>
         </div>
       </section>
-      <GuideModal key={isGuideOpen ? 'guide-open' : 'guide-closed'} isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+      <GuideModal key={isGuideOpen ? 'guide-open' : 'guide-closed'} isOpen={isGuideOpen} onClose={closeGuide} />
       <SampleBookModal
         key={isBookOpen ? 'book-open' : 'book-closed'}
         isOpen={isBookOpen}
-        onClose={() => setIsBookOpen(false)}
+        onClose={closeBook}
       />
     </>
   )

@@ -9,7 +9,7 @@ import './FinalCta.css'
 
 export default function FinalCta() {
   const [isBenefitOpen, setIsBenefitOpen] = useState(false)
-  const sectionRef = useSectionView('benefit_section_view', () => ({ entry_method: getBenefitEntryMethod() }))
+  const sectionRef = useSectionView('benefit_section_view', () => ({ entry_method: getBenefitEntryMethod() }), 'bottom_cta')
 
   const openBenefit = () => {
     trackEvent('launch_cta_click', { cta_location: 'benefit' })
