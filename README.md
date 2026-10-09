@@ -54,7 +54,7 @@ src/
 - 이벤트는 `trackEvent('이름', { 파라미터 })`로 보내요. 섹션 노출은 `useSectionView` 훅이 방문당 한 번만 보내요.
 - 이벤트 이름·파라미터는 분석 명세(가설 검증용)와 같아야 해요. 이름이나 값을 바꾸기 전에 분석 담당과 먼저 상의해 주세요.
 - 화면 문구와 GA 값은 달라요. 예) 가격 의견 "비싸다" → `expensive` (`analytics.js`의 `PRICE_RESPONSE`).
-- Mixpanel은 배포 환경변수 `VITE_MIXPANEL_TOKEN`에 Project Token이 있을 때만 켜져요(토큰은 배포 서비스의 환경변수에 넣고, 바꾸면 다시 배포해야 반영돼요). 자동 수집(클릭·페이지뷰·마케팅 파라미터)과 세션 리플레이는 꺼 두고, 분석 명세의 7개 이벤트만 `trackMixpanel('이름', { 속성 })`으로 보내요. GA4 이벤트(`trackEvent`)는 Mixpanel로 가지 않아요.
+- Mixpanel은 배포 환경변수 `VITE_MIXPANEL_TOKEN`에 Project Token이 있을 때만 켜져요(토큰은 배포 서비스의 환경변수에 넣고, 바꾸면 다시 배포해야 반영돼요). 자동 수집(클릭·페이지뷰·마케팅 파라미터)은 끄고, 세션 리플레이는 배포 환경의 전체 세션에서 켜져요. 리플레이의 모든 입력값과 화면 텍스트는 마스킹하며 콘솔 로그는 수집하지 않아요. 분석 명세의 7개 이벤트만 `trackMixpanel('이름', { 속성 })`으로 보내며, GA4 이벤트(`trackEvent`)는 Mixpanel로 가지 않아요.
   - 이벤트: `landing_viewed`, `section_viewed`(`section_name`: hero/process/sample/faq/bottom_cta), `sample_opened`·`sample_closed`(`sample_type`: story/guide), `faq_opened`(`faq_id`: faq_01…), `cta_clicked`(`cta_position`: hero), `email_submitted`
   - 모든 이벤트의 공통 속성: `session_id`, `page_path`, `utm_source`·`utm_medium`·`utm_campaign`·`utm_content`, `device_type`. UTM은 페이지를 연 주소에서만 읽고(저장하지 않음) 없으면 `none`이에요.
   - `section_viewed`는 섹션이 50% 이상(화면보다 긴 섹션은 화면 높이의 50% 이상) 1초 이상 보일 때 페이지뷰당 한 번만 보내요.

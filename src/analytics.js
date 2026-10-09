@@ -1,4 +1,4 @@
-import mixpanel from 'mixpanel-browser/src/loaders/loader-module-core'
+import mixpanel from 'mixpanel-browser'
 import { GA_MEASUREMENT_ID, META_PIXEL_ID, MIXPANEL_TOKEN } from './config'
 
 let mixpanelInitialized = false
@@ -55,6 +55,10 @@ export function initMixpanel() {
       autocapture: false,
       track_pageview: false,
       track_marketing: false,
+      record_sessions_percent: 100,
+      record_mask_all_inputs: true,
+      record_mask_all_text: true,
+      record_console: false,
     })
     mixpanelInitialized = true
   }
