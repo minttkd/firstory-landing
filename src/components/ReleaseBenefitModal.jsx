@@ -329,6 +329,7 @@ export default function ReleaseBenefitModal({ isOpen, onClose }) {
             <label htmlFor="release-benefit-email">쿠폰 받을 이메일</label>
             <input
               id="release-benefit-email"
+              className="mp-mask"
               type="email"
               value={email}
               onChange={(event) => {
